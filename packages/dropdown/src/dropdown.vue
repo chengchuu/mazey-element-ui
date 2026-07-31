@@ -55,6 +55,14 @@
       hideTimeout: {
         type: Number,
         default: 150
+      },
+      tabindex: {
+        type: Number,
+        default: 0
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -66,23 +74,19 @@
         menuItems: null,
         menuItemsArray: null,
         dropdownElm: null,
-        focusing: false
+        focusing: false,
+        listId: `dropdown-menu-${generateId()}`
       };
     },
 
     computed: {
       dropdownSize() {
         return this.size || (this.$ELEMENT || {}).size;
-      },
-      listId() {
-        return `dropdown-menu-${generateId()}`;
       }
     },
 
     mounted() {
       this.$on('menu-item-click', this.handleMenuItemClick);
-      this.initEvent();
-      this.initAria();
     },
 
     watch: {
@@ -111,23 +115,25 @@
         };
       },
       show() {
-        if (this.triggerElm.disabled) return;
+        if (this.disabled) return;
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.visible = true;
         }, this.trigger === 'click' ? 0 : this.showTimeout);
       },
       hide() {
-        if (this.triggerElm.disabled) return;
+        if (this.disabled) return;
         this.removeTabindex();
-        this.resetTabindex(this.triggerElm);
+        if (this.tabindex >= 0) {
+          this.resetTabindex(this.triggerElm);
+        }
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.visible = false;
         }, this.trigger === 'click' ? 0 : this.hideTimeout);
       },
       handleClick() {
-        if (this.triggerElm.disabled) return;
+        if (this.disabled) return;
         if (this.visible) {
           this.hide();
         } else {
@@ -147,7 +153,6 @@
         } else if ([9, 27].indexOf(keyCode) > -1) { // tab || esc
           this.hide();
         }
-        return;
       },
       handleItemKeyDown(ev) {
         const keyCode = ev.keyCode;
@@ -167,16 +172,15 @@
           ev.preventDefault();
           ev.stopPropagation();
         } else if (keyCode === 13) { // enter选中
-          this.triggerElm.focus();
+          this.triggerElmFocus();
           target.click();
-          if (!this.hideOnClick) { // click关闭
+          if (this.hideOnClick) { // click关闭
             this.visible = false;
           }
         } else if ([9, 27].indexOf(keyCode) > -1) { // tab // esc
           this.hide();
-          this.triggerElm.focus();
+          this.triggerElmFocus();
         }
-        return;
       },
       resetTabindex(ele) { // 下次tab时组件聚焦元素
         this.removeTabindex();
@@ -192,12 +196,10 @@
         this.dropdownElm.setAttribute('id', this.listId);
         this.triggerElm.setAttribute('aria-haspopup', 'list');
         this.triggerElm.setAttribute('aria-controls', this.listId);
-        this.menuItems = this.dropdownElm.querySelectorAll("[tabindex='-1']");
-        this.menuItemsArray = Array.prototype.slice.call(this.menuItems);
 
         if (!this.splitButton) { // 自定义
           this.triggerElm.setAttribute('role', 'button');
-          this.triggerElm.setAttribute('tabindex', '0');
+          this.triggerElm.setAttribute('tabindex', this.tabindex);
           this.triggerElm.setAttribute('class', (this.triggerElm.getAttribute('class') || '') + ' el-dropdown-selfdefine'); // 控制
         }
       },
@@ -207,7 +209,7 @@
           ? this.$refs.trigger.$el
           : this.$slots.default[0].elm;
 
-        let dropdownElm = this.dropdownElm = this.$slots.dropdown[0].elm;
+        let dropdownElm = this.dropdownElm;
 
         this.triggerElm.addEventListener('keydown', handleTriggerKeyDown); // triggerElm keydown
         dropdownElm.addEventListener('keydown', handleItemKeyDown, true); // item keydown
@@ -238,34 +240,52 @@
         }
         this.$emit('command', command, instance);
       },
-      focus() {
+      triggerElmFocus() {
         this.triggerElm.focus && this.triggerElm.focus();
+      },
+      initDomOperation() {
+        this.dropdownElm = this.popperElm;
+        this.menuItems = this.dropdownElm.querySelectorAll("[tabindex='-1']");
+        this.menuItemsArray = [].slice.call(this.menuItems);
+
+        this.initEvent();
+        this.initAria();
       }
     },
 
     render(h) {
-      let { hide, splitButton, type, dropdownSize } = this;
+      let { hide, splitButton, type, dropdownSize, disabled } = this;
 
       const handleMainButtonClick = (event) => {
         this.$emit('click', event);
         hide();
       };
 
-      let triggerElm = !splitButton
-        ? this.$slots.default
-        : (<el-button-group>
-          <el-button type={type} size={dropdownSize} nativeOn-click={handleMainButtonClick}>
+      let triggerElm = null;
+      if (splitButton) {
+        triggerElm = <el-button-group>
+          <el-button type={type} size={dropdownSize} nativeOn-click={handleMainButtonClick} disabled={disabled}>
             {this.$slots.default}
           </el-button>
-          <el-button ref="trigger" type={type} size={dropdownSize} class="el-dropdown__caret-button">
+          <el-button ref="trigger" type={type} size={dropdownSize} class="el-dropdown__caret-button" disabled={disabled}>
             <i class="el-dropdown__icon el-icon-arrow-down"></i>
           </el-button>
-        </el-button-group>);
+        </el-button-group>;
+      } else {
+        triggerElm = this.$slots.default;
+        const vnodeData = triggerElm[0].data || {};
+        let { attrs = {} } = vnodeData;
+        if (disabled && !attrs.disabled) {
+          attrs.disabled = true;
+          vnodeData.attrs = attrs;
+        }
+      }
+      const menuElm = disabled ? null : this.$slots.dropdown;
 
       return (
-        <div class="el-dropdown" v-clickoutside={hide}>
+        <div class="el-dropdown" v-clickoutside={hide} aria-disabled={disabled}>
           {triggerElm}
-          {this.$slots.dropdown}
+          {menuElm}
         </div>
       );
     }

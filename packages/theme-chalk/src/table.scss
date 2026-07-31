@@ -13,22 +13,23 @@
   max-width: 100%;
   background-color: $--color-white;
   font-size: 14px;
-  color: $--table-text-color;
+  color: $--table-font-color;
 
   // 数据为空
   @include e(empty-block) {
-    position: relative;
     min-height: 60px;
     text-align: center;
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   @include e(empty-text) {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    // min-height doesn't work in IE10 and IE11 https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
+    // set empty text line height up to contrainer min-height as workaround.
+    line-height: 60px;
+    width: 50%;
     color: $--color-text-secondary;
   }
 
@@ -74,11 +75,21 @@
     }
   }
 
+  @include e(placeholder) {
+    display: inline-block;
+    width: 20px;
+  }
+
+  @include e(append-wrapper) {
+    // 避免外边距重合 https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing
+    overflow: hidden;
+  }
+
   @include m(fit) {
     border-right: 0;
     border-bottom: 0;
 
-    th.gutter, td.gutter {
+    .el-table__cell.gutter {
       border-right-width: 1px;
     }
   }
@@ -96,30 +107,27 @@
   }
 
   thead {
-    color: $--table-header-color;
+    color: $--table-header-font-color;
     font-weight: 500;
 
     &.is-group {
-      th {
+      th.el-table__cell {
         background: $--background-color-base;
       }
     }
   }
 
-  th, td {
+  .el-table__cell {
     padding: 12px 0;
     min-width: 0;
     box-sizing: border-box;
     text-overflow: ellipsis;
     vertical-align: middle;
     position: relative;
+    text-align: left;
 
     @include when(center) {
       text-align: center;
-    }
-
-    @include when(left) {
-      text-align: left;
     }
 
     @include when(right) {
@@ -141,21 +149,21 @@
   }
 
   @include m(medium) {
-    th, td {
+    .el-table__cell {
       padding: 10px 0;
     }
   }
 
   @include m(small) {
     font-size: 12px;
-    th, td {
+    .el-table__cell {
       padding: 8px 0;
     }
   }
 
   @include m(mini) {
     font-size: 12px;
-    th, td {
+    .el-table__cell {
       padding: 6px 0;
     }
   }
@@ -168,40 +176,28 @@
     }
   }
 
-  th.is-leaf, td {
+  th.el-table__cell.is-leaf,
+  td.el-table__cell {
     border-bottom: $--table-border;
   }
 
-  th.is-sortable {
+  th.el-table__cell.is-sortable {
     cursor: pointer;
   }
 
-  th {
-    white-space: nowrap;
+  th.el-table__cell {
     overflow: hidden;
     user-select: none;
-    text-align: left;
-    background-color: $--table-header-background;
-
-    div {
-      display: inline-block;
-      padding-left: 10px;
-      padding-right: 10px;
-      line-height: 40px;
-      box-sizing: border-box;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+    background-color: $--table-header-background-color;
 
     > .cell {
-      position: relative;
-      word-wrap: normal;
-      text-overflow: ellipsis;
       display: inline-block;
-      vertical-align: middle;
-      width: 100%;
       box-sizing: border-box;
+      position: relative;
+      vertical-align: middle;
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 100%;
 
       &.highlight {
         color: $--color-primary;
@@ -220,7 +216,7 @@
     }
   }
 
-  td {
+  td.el-table__cell {
     div {
       box-sizing: border-box;
     }
@@ -285,7 +281,7 @@
       border-color: transparent;
     }
 
-    th, td {
+    .el-table__cell {
       border-right: $--table-border;
 
       &:first-child .cell {
@@ -293,12 +289,12 @@
       }
     }
 
-    th.gutter:last-of-type {
+    th.el-table__cell.gutter:last-of-type {
       border-bottom: $--table-border;
       border-bottom-width: 1px;
     }
 
-    & th {
+    & th.el-table__cell {
       border-bottom: $--table-border;
     }
   }
@@ -361,10 +357,10 @@
     bottom: 0;
     z-index: 3;
 
-    & tbody td {
+    & tbody td.el-table__cell {
       border-top: $--table-border;
-      background-color: $--table-row-hover-background;
-      color: $--table-text-color;
+      background-color: $--table-row-hover-background-color;
+      color: $--table-font-color;
     }
   }
 
@@ -382,7 +378,7 @@
 
   @include e(footer-wrapper) {
     margin-top: -1px;
-    td {
+    td.el-table__cell {
       border-top: $--table-border;
     }
   }
@@ -395,9 +391,9 @@
   @include e((header-wrapper, footer-wrapper)) {
     overflow: hidden;
 
-    & tbody td {
-      background-color: $--table-row-hover-background;
-      color: $--table-text-color;
+    & tbody td.el-table__cell {
+      background-color: $--table-row-hover-background-color;
+      color: $--table-font-color;
     }
   }
 
@@ -486,12 +482,12 @@
   @include m(striped) {
     & .el-table__body {
       & tr.el-table__row--striped {
-        td {
+        td.el-table__cell {
           background: #FAFAFA;
         }
 
-        &.current-row td {
-          background-color: $--table-current-row-background;
+        &.current-row td.el-table__cell, &.selection-row td.el-table__cell {
+          background-color: $--table-current-row-background-color;
         }
       }
     }
@@ -500,16 +496,16 @@
   @include e(body) {
     tr.hover-row {
       &, &.el-table__row--striped {
-        &, &.current-row {
-          > td {
-            background-color: $--table-current-row-background;
+        &, &.current-row, &.selection-row {
+          > td.el-table__cell {
+            background-color: $--table-row-hover-background-color;
           }
         }
       }
     }
 
-    tr.current-row > td {
-      background-color: $--table-current-row-background;
+    tr.current-row > td.el-table__cell, tr.selection-row > td.el-table__cell {
+      background-color: $--table-current-row-background-color;
     }
   }
 
@@ -536,14 +532,14 @@
   }
 
   @include m(enable-row-transition) {
-    .el-table__body td {
+    .el-table__body td.el-table__cell {
       transition: background-color .25s ease;
     }
   }
 
   @include m(enable-row-hover) {
-    .el-table__body tr:hover > td {
-      background-color: $--table-row-hover-background;
+    .el-table__body tr:hover > td.el-table__cell {
+      background-color: $--table-row-hover-background-color;
     }
   }
 
@@ -552,6 +548,17 @@
     .el-table__fixed-right {
       bottom: 0;
       overflow: hidden;
+    }
+  }
+
+  [class*=el-table__row--level] {
+    .el-table__expand-icon {
+      display: inline-block;
+      width: 20px;
+      line-height: 20px;
+      height: 20px;
+      text-align: center;
+      margin-right: 3px;
     }
   }
 }

@@ -16,10 +16,10 @@ export default {
       startTime: 'Start Tidspunkt',
       endDate: 'Sluttdato',
       endTime: 'Sluttidspunkt',
-      prevYear: 'Previous Year', // to be translated
-      nextYear: 'Next Year', // to be translated
-      prevMonth: 'Previous Month', // to be translated
-      nextMonth: 'Next Month', // to be translated
+      prevYear: 'Forrige År',
+      nextYear: 'Neste År',
+      prevMonth: 'Forrige Måned',
+      nextMonth: 'Neste Måned',
       year: '',
       month1: 'Januar',
       month2: 'Februar',
@@ -67,7 +67,8 @@ export default {
     cascader: {
       noMatch: 'Ingen samsvarende data',
       loading: 'Laster',
-      placeholder: 'Velg'
+      placeholder: 'Velg',
+      noData: 'Ingen data'
     },
     pagination: {
       goto: 'Gå til',
@@ -81,7 +82,7 @@ export default {
       error: 'Ugyldig input'
     },
     upload: {
-      deleteTip: 'press delete to remove', // to be translated
+      deleteTip: 'trykk slett for å ta bort',
       delete: 'Slett',
       preview: 'Forhåndsvisning',
       continue: 'Fortsett'
@@ -91,7 +92,7 @@ export default {
       confirmFilter: 'Bekreft',
       resetFilter: 'Tilbakestill',
       clearFilter: 'Alle',
-      sumText: 'Sum' // to be translated
+      sumText: 'Sum'
     },
     tree: {
       emptyText: 'Ingen Data'
@@ -99,10 +100,23 @@ export default {
     transfer: {
       noMatch: 'Ingen samsvarende data',
       noData: 'Ingen data',
-      titles: ['List 1', 'List 2'], // to be translated
-      filterPlaceholder: 'Enter keyword', // to be translated
-      noCheckedFormat: '{total} items', // to be translated
-      hasCheckedFormat: '{checked}/{total} checked' // to be translated
+      titles: ['Liste 1', 'Liste 2'],
+      filterPlaceholder: 'Tast inn nøkkelord',
+      noCheckedFormat: '{total} gjenstander',
+      hasCheckedFormat: '{checked}/{total} sjekket'
+    },
+    image: {
+      error: 'MISLYKTES'
+    },
+    pageHeader: {
+      title: 'Tilbake'
+    },
+    popconfirm: {
+      confirmButtonText: 'Ja',
+      cancelButtonText: 'Nei'
+    },
+    empty: {
+      description: 'Ingen Data'
     }
   }
 };

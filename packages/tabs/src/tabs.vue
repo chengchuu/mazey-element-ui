@@ -19,7 +19,8 @@
         type: String,
         default: 'top'
       },
-      beforeLeave: Function
+      beforeLeave: Function,
+      stretch: Boolean
     },
 
     provide() {
@@ -44,14 +45,30 @@
       },
       currentName(value) {
         if (this.$refs.nav) {
-          this.$nextTick(_ => {
-            this.$refs.nav.scrollToActiveTab();
+          this.$nextTick(() => {
+            this.$refs.nav.$nextTick(_ => {
+              this.$refs.nav.scrollToActiveTab();
+            });
           });
         }
       }
     },
 
     methods: {
+      calcPaneInstances(isForceUpdate = false) {
+        if (this.$slots.default) {
+          const paneSlots = this.$slots.default.filter(vnode => vnode.tag &&
+            vnode.componentOptions && vnode.componentOptions.Ctor.options.name === 'ElTabPane');
+          // update indeed
+          const panes = paneSlots.map(({ componentInstance }) => componentInstance);
+          const panesChanged = !(panes.length === this.panes.length && panes.every((pane, index) => pane === this.panes[index]));
+          if (isForceUpdate || panesChanged) {
+            this.panes = panes;
+          }
+        } else if (this.panes.length !== 0) {
+          this.panes = [];
+        }
+      },
       handleTabClick(tab, tabName, event) {
         if (tab.disabled) return;
         this.setCurrentName(tabName);
@@ -73,32 +90,25 @@
           this.$emit('input', value);
         };
         if (this.currentName !== value && this.beforeLeave) {
-          const before = this.beforeLeave();
+          const before = this.beforeLeave(value, this.currentName);
           if (before && before.then) {
-            before.then(() => {
-              changeCurrentName();
-            });
+            before
+              .then(() => {
+                changeCurrentName();
+                this.$refs.nav && this.$refs.nav.removeFocus();
+              }, () => {
+                // https://github.com/ElemeFE/element/pull/14816
+                // ignore promise rejection in `before-leave` hook
+              });
           } else if (before !== false) {
             changeCurrentName();
           }
         } else {
           changeCurrentName();
         }
-      },
-      addPanes(item) {
-        const index = this.$slots.default.filter(item => {
-          return item.elm.nodeType === 1 && /\bel-tab-pane\b/.test(item.elm.className);
-        }).indexOf(item.$vnode);
-        this.panes.splice(index, 0, item);
-      },
-      removePanes(item) {
-        const panes = this.panes;
-        const index = panes.indexOf(item);
-        if (index > -1) {
-          panes.splice(index, 1);
-        }
       }
     },
+
     render(h) {
       let {
         type,
@@ -109,7 +119,8 @@
         panes,
         editable,
         addable,
-        tabPosition
+        tabPosition,
+        stretch
       } = this;
 
       const newButton = editable || addable
@@ -132,7 +143,8 @@
           onTabRemove: handleTabRemove,
           editable,
           type,
-          panes
+          panes,
+          stretch
         },
         ref: 'nav'
       };
@@ -159,10 +171,21 @@
         </div>
       );
     },
+  
     created() {
       if (!this.currentName) {
         this.setCurrentName('0');
       }
+
+      this.$on('tab-nav-update', this.calcPaneInstances.bind(null, true));
+    },
+
+    mounted() {
+      this.calcPaneInstances();
+    },
+
+    updated() {
+      this.calcPaneInstances();
     }
   };
 </script>

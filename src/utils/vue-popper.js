@@ -70,6 +70,7 @@ export default {
     },
 
     showPopper(val) {
+      if (this.disabled) return;
       val ? this.updatePopper() : this.destroyPopper();
       this.$emit('input', val);
     }

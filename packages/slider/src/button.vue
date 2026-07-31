@@ -38,12 +38,6 @@
     },
 
     props: {
-      buttonStyle: {
-        type: [Object, String],
-        default() {
-          return {};
-        }
-      },
       value: {
         type: Number,
         default: 0
@@ -108,7 +102,7 @@
       },
 
       wrapperStyle() {
-        return Object.assign(this.vertical ? { bottom: this.currentPosition } : { left: this.currentPosition }, this.buttonStyle);
+        return this.vertical ? { bottom: this.currentPosition } : { left: this.currentPosition };
       }
     },
 
@@ -151,11 +145,13 @@
         if (this.disabled) return;
         this.newPosition = parseFloat(this.currentPosition) - this.step / (this.max - this.min) * 100;
         this.setPosition(this.newPosition);
+        this.$parent.emitChange();
       },
       onRightKeyDown() {
         if (this.disabled) return;
         this.newPosition = parseFloat(this.currentPosition) + this.step / (this.max - this.min) * 100;
         this.setPosition(this.newPosition);
+        this.$parent.emitChange();
       },
       onDragStart(event) {
         this.dragging = true;
@@ -218,7 +214,7 @@
       },
 
       setPosition(newPosition) {
-        if (newPosition === null) return;
+        if (newPosition === null || isNaN(newPosition)) return;
         if (newPosition < 0) {
           newPosition = 0;
         } else if (newPosition > 100) {
@@ -230,6 +226,7 @@
         value = parseFloat(value.toFixed(this.precision));
         this.$emit('input', value);
         this.$nextTick(() => {
+          this.displayTooltip();
           this.$refs.tooltip && this.$refs.tooltip.updatePopper();
         });
         if (!this.dragging && this.value !== this.oldValue) {

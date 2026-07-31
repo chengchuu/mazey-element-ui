@@ -24,8 +24,12 @@
       tabindex="-1"
       @focus="focus = true"
       @blur="focus = false"
+      autocomplete="off"
     >
-    <span class="el-radio-button__inner" :style="value === label ? activeStyle : null">
+    <span
+      class="el-radio-button__inner"
+      :style="value === label ? activeStyle : null"
+      @keydown.stop>
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>
@@ -96,7 +100,7 @@
         return this.disabled || this._radioGroup.disabled || (this.elForm || {}).disabled;
       },
       tabIndex() {
-        return !this.isDisabled ? (this._radioGroup ? (this.value === this.label ? 0 : -1) : 0) : -1;
+        return (this.isDisabled || (this._radioGroup && this.value !== this.label)) ? -1 : 0;
       }
     },
 

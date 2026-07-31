@@ -26,6 +26,9 @@ export declare class ElAutocomplete extends ElementUIComponent {
   /** The placeholder of Autocomplete */
   placeholder: string
 
+  /** Whether to show clear button */
+  clearable: boolean
+
   /** Whether Autocomplete is disabled */
   disabled: boolean
 
@@ -56,9 +59,6 @@ export declare class ElAutocomplete extends ElementUIComponent {
   /** Whether show suggestions when input focus */
   triggerOnFocus: boolean
 
-  /** Whether to emit a `select` event on enter when there is no autocomplete match */
-  selectWhenUnmatched: boolean
-
   /** Prefix icon class */
   prefixIcon: string
 
@@ -67,6 +67,9 @@ export declare class ElAutocomplete extends ElementUIComponent {
 
   /** Whether to hide the loading icon in remote search */
   hideLoading: boolean
+
+  /** Whether to append the dropdown to body */
+  popperAppendToBody: boolean
 
   /**
    * Focus the Input component

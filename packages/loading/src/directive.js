@@ -45,6 +45,7 @@ loadingDirective.install = Vue => {
       });
     } else {
       afterLeave(el.instance, _ => {
+        if (!el.instance.hiding) return;
         el.domVisible = false;
         const target = binding.modifiers.fullscreen || binding.modifiers.body
           ? document.body
@@ -63,7 +64,7 @@ loadingDirective.install = Vue => {
         el.mask.style[property] = el.maskStyle[property];
       });
 
-      if (el.originalPosition !== 'absolute' && el.originalPosition !== 'fixed') {
+      if (el.originalPosition !== 'absolute' && el.originalPosition !== 'fixed' && el.originalPosition !== 'sticky') {
         addClass(parent, 'el-loading-parent--relative');
       }
       if (binding.modifiers.fullscreen && binding.modifiers.lock) {
@@ -80,6 +81,9 @@ loadingDirective.install = Vue => {
         }
       });
       el.domInserted = true;
+    } else if (el.domVisible && el.instance.hiding === true) {
+      el.instance.visible = true;
+      el.instance.hiding = false;
     }
   };
 
@@ -121,6 +125,7 @@ loadingDirective.install = Vue => {
         el.mask.parentNode.removeChild(el.mask);
         toggleLoading(el, { value: false, modifiers: binding.modifiers });
       }
+      el.instance && el.instance.$destroy();
     }
   });
 };

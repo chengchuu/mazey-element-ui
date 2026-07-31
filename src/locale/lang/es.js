@@ -2,13 +2,13 @@ export default {
   el: {
     colorpicker: {
       confirm: 'Confirmar',
-      clear: 'Despejar'
+      clear: 'Limpiar'
     },
     datepicker: {
       now: 'Ahora',
       today: 'Hoy',
       cancel: 'Cancelar',
-      clear: 'Despejar',
+      clear: 'Limpiar',
       confirm: 'Confirmar',
       selectDate: 'Seleccionar fecha',
       selectTime: 'Seleccionar hora',
@@ -67,7 +67,8 @@ export default {
     cascader: {
       noMatch: 'No hay datos que coincidan',
       loading: 'Cargando',
-      placeholder: 'Seleccionar'
+      placeholder: 'Seleccionar',
+      noData: 'Sin datos'
     },
     pagination: {
       goto: 'Ir a',
@@ -81,7 +82,7 @@ export default {
       error: 'Entrada inválida'
     },
     upload: {
-      deleteTip: 'press delete to remove', // to be translated
+      deleteTip: 'Pulse Eliminar para retirar',
       delete: 'Eliminar',
       preview: 'Vista Previa',
       continue: 'Continuar'
@@ -90,7 +91,7 @@ export default {
       emptyText: 'Sin Datos',
       confirmFilter: 'Confirmar',
       resetFilter: 'Reiniciar',
-      clearFilter: 'Despejar',
+      clearFilter: 'Limpiar',
       sumText: 'Suma'
     },
     tree: {
@@ -103,6 +104,19 @@ export default {
       filterPlaceholder: 'Ingresar palabra clave',
       noCheckedFormat: '{total} artículos',
       hasCheckedFormat: '{checked}/{total} revisados'
+    },
+    image: {
+      error: 'HA FALLADO'
+    },
+    pageHeader: {
+      title: 'Volver'
+    },
+    popconfirm: {
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    },
+    empty: {
+      description: 'Sin Datos'
     }
   }
 };

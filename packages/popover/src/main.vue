@@ -18,7 +18,9 @@
         <slot>{{ content }}</slot>
       </div>
     </transition>
-    <slot name="reference"></slot>
+    <span class="el-popover__reference-wrapper" ref="wrapper" >
+      <slot name="reference"></slot>
+    </span>
   </span>
 </template>
 <script>
@@ -42,6 +44,10 @@ export default {
       type: Number,
       default: 0
     },
+    closeDelay: {
+      type: Number,
+      default: 200
+    },
     title: String,
     disabled: Boolean,
     content: String,
@@ -58,6 +64,10 @@ export default {
     transition: {
       type: String,
       default: 'fade-in-linear'
+    },
+    tabindex: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -68,6 +78,9 @@ export default {
   },
   watch: {
     showPopper(val) {
+      if (this.disabled) {
+        return;
+      }
       val ? this.$emit('show') : this.$emit('hide');
     }
   },
@@ -76,14 +89,14 @@ export default {
     let reference = this.referenceElm = this.reference || this.$refs.reference;
     const popper = this.popper || this.$refs.popper;
 
-    if (!reference && this.$slots.reference && this.$slots.reference[0]) {
-      reference = this.referenceElm = this.$slots.reference[0].elm;
+    if (!reference && this.$refs.wrapper.children) {
+      reference = this.referenceElm = this.$refs.wrapper.children[0];
     }
     // 可访问性
     if (reference) {
       addClass(reference, 'el-popover__reference');
       reference.setAttribute('aria-describedby', this.tooltipId);
-      reference.setAttribute('tabindex', 0); // tab序列
+      reference.setAttribute('tabindex', this.tabindex); // tab序列
       popper.setAttribute('tabindex', 0);
 
       if (this.trigger !== 'click') {
@@ -110,24 +123,10 @@ export default {
       on(reference, 'mouseleave', this.handleMouseLeave);
       on(popper, 'mouseleave', this.handleMouseLeave);
     } else if (this.trigger === 'focus') {
-      let found = false;
-
-      if ([].slice.call(reference.children).length) {
-        const children = reference.childNodes;
-        const len = children.length;
-        for (let i = 0; i < len; i++) {
-          if (children[i].nodeName === 'INPUT' ||
-              children[i].nodeName === 'TEXTAREA') {
-            on(children[i], 'focusin', this.doShow);
-            on(children[i], 'focusout', this.doClose);
-            found = true;
-            break;
-          }
-        }
+      if (this.tabindex < 0) {
+        console.warn('[Element Warn][Popover]a negative taindex means that the element cannot be focused by tab key');
       }
-      if (found) return;
-      if (reference.nodeName === 'INPUT' ||
-        reference.nodeName === 'TEXTAREA') {
+      if (reference.querySelector('input, textarea')) {
         on(reference, 'focusin', this.doShow);
         on(reference, 'focusout', this.doClose);
       } else {
@@ -135,6 +134,14 @@ export default {
         on(reference, 'mouseup', this.doClose);
       }
     }
+  },
+
+  beforeDestroy() {
+    this.cleanup();
+  },
+
+  deactivated() {
+    this.cleanup();
   },
 
   methods: {
@@ -149,14 +156,14 @@ export default {
     },
     handleFocus() {
       addClass(this.referenceElm, 'focusing');
-      if (this.trigger !== 'manual') this.showPopper = true;
+      if (this.trigger === 'click' || this.trigger === 'focus') this.showPopper = true;
     },
     handleClick() {
       removeClass(this.referenceElm, 'focusing');
     },
     handleBlur() {
       removeClass(this.referenceElm, 'focusing');
-      if (this.trigger !== 'manual') this.showPopper = false;
+      if (this.trigger === 'click' || this.trigger === 'focus') this.showPopper = false;
     },
     handleMouseEnter() {
       clearTimeout(this._timer);
@@ -175,16 +182,20 @@ export default {
     },
     handleMouseLeave() {
       clearTimeout(this._timer);
-      this._timer = setTimeout(() => {
+      if (this.closeDelay) {
+        this._timer = setTimeout(() => {
+          this.showPopper = false;
+        }, this.closeDelay);
+      } else {
         this.showPopper = false;
-      }, 200);
+      }
     },
     handleDocumentClick(e) {
       let reference = this.reference || this.$refs.reference;
       const popper = this.popper || this.$refs.popper;
 
-      if (!reference && this.$slots.reference && this.$slots.reference[0]) {
-        reference = this.referenceElm = this.$slots.reference[0].elm;
+      if (!reference && this.$refs.wrapper.children) {
+        reference = this.referenceElm = this.$refs.wrapper.children[0];
       }
       if (!this.$el ||
         !reference ||
@@ -200,6 +211,11 @@ export default {
     handleAfterLeave() {
       this.$emit('after-leave');
       this.doDestroy();
+    },
+    cleanup() {
+      if (this.openDelay || this.closeDelay) {
+        clearTimeout(this._timer);
+      }
     }
   },
 
@@ -211,6 +227,8 @@ export default {
     off(reference, 'mousedown', this.doShow);
     off(reference, 'focusin', this.doShow);
     off(reference, 'focusout', this.doClose);
+    off(reference, 'mousedown', this.doShow);
+    off(reference, 'mouseup', this.doClose);
     off(reference, 'mouseleave', this.handleMouseLeave);
     off(reference, 'mouseenter', this.handleMouseEnter);
     off(document, 'click', this.handleDocumentClick);
