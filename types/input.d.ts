@@ -48,11 +48,8 @@ export declare class ElInput extends ElementUIComponent {
   /** Whether textarea has an adaptive height, only works when type is 'textarea' */
   autosize: boolean | AutoSize
 
-  /** @Deprecated in next major version */
+  /** Same as auto-complete in native input */
   autoComplete: string
-
-  /** Same as autocomplete in native input */
-  autocomplete: string
 
   /** Same as name in native input */
   name: string

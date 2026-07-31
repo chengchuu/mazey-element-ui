@@ -48,7 +48,6 @@
     v-else>
     <i :class="['el-input__icon', 'el-range__icon', triggerClass]"></i>
     <input
-      autocomplete="off"
       :placeholder="startPlaceholder"
       :value="displayValue && displayValue[0]"
       :disabled="pickerDisabled"
@@ -61,7 +60,6 @@
       class="el-range-input">
     <span class="el-range-separator">{{ rangeSeparator }}</span>
     <input
-      autocomplete="off"
       :placeholder="endPlaceholder"
       :value="displayValue && displayValue[1]"
       :disabled="pickerDisabled"
@@ -421,6 +419,7 @@ export default {
       handler(val) {
         if (this.picker) {
           this.picker.value = val;
+          this.picker.selectedDate = Array.isArray(val) ? val : [];
         }
       }
     },
@@ -428,11 +427,6 @@ export default {
       // NOTE: should eventually move to jsx style picker + panel ?
       if (this.picker) {
         this.picker.defaultValue = val;
-      }
-    },
-    value(val, oldVal) {
-      if (!valueEquals(val, oldVal) && !this.pickerVisible) {
-        this.dispatch('ElFormItem', 'el.form.change', val);
       }
     }
   },
@@ -514,21 +508,12 @@ export default {
     },
 
     parsedValue() {
-      if (!this.value) return this.value; // component value is not set
-      if (this.type === 'time-select') return this.value; // time-select does not require parsing, this might change in next major version
-
-      const valueIsDateObject = isDateObject(this.value) || (Array.isArray(this.value) && this.value.every(isDateObject));
-      if (valueIsDateObject) {
+      const isParsed = isDateObject(this.value) || (Array.isArray(this.value) && this.value.every(isDateObject));
+      if (this.valueFormat && !isParsed) {
+        return parseAsFormatAndType(this.value, this.valueFormat, this.type, this.rangeSeparator) || this.value;
+      } else {
         return this.value;
       }
-
-      if (this.valueFormat) {
-        return parseAsFormatAndType(this.value, this.valueFormat, this.type, this.rangeSeparator) || this.value;
-      }
-
-      // NOTE: deal with common but incorrect usage, should remove in next major version
-      // user might provide string / timestamp without value-format, coerce them into date (or array of date)
-      return Array.isArray(this.value) ? this.value.map(val => new Date(val)) : new Date(this.value);
     },
 
     _elFormItemSize() {
@@ -706,16 +691,20 @@ export default {
     handleClose() {
       if (!this.pickerVisible) return;
       this.pickerVisible = false;
-
-      if (this.type === 'dates') {
-        // restore to former value
-        const oldValue = parseAsFormatAndType(this.valueOnOpen, this.valueFormat, this.type, this.rangeSeparator) || this.valueOnOpen;
-        this.emitInput(oldValue);
+      const {
+        type,
+        valueOnOpen,
+        valueFormat,
+        rangeSeparator
+      } = this;
+      if (type === 'dates' && this.picker) {
+        this.picker.selectedDate = parseAsFormatAndType(valueOnOpen, valueFormat, type, rangeSeparator) || valueOnOpen;
+        this.emitInput(this.picker.selectedDate);
       }
     },
 
     handleFieldReset(initialValue) {
-      this.userInput = initialValue === '' ? null : initialValue;
+      this.userInput = initialValue;
     },
 
     handleFocus() {
@@ -825,6 +814,7 @@ export default {
       this.picker.selectionMode = this.selectionMode;
       this.picker.unlinkPanels = this.unlinkPanels;
       this.picker.arrowControl = this.arrowControl || this.timeArrowControl || false;
+      this.picker.selectedDate = Array.isArray(this.value) && this.value || [];
       this.$watch('format', (format) => {
         this.picker.format = format;
       });

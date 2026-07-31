@@ -17,17 +17,18 @@
 
   // 数据为空
   @include e(empty-block) {
+    position: relative;
     min-height: 60px;
     text-align: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   @include e(empty-text) {
-    width: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     color: $--color-text-secondary;
   }
 
@@ -112,10 +113,13 @@
     text-overflow: ellipsis;
     vertical-align: middle;
     position: relative;
-    text-align: left;
 
     @include when(center) {
       text-align: center;
+    }
+
+    @include when(left) {
+      text-align: left;
     }
 
     @include when(right) {
@@ -176,6 +180,7 @@
     white-space: nowrap;
     overflow: hidden;
     user-select: none;
+    text-align: left;
     background-color: $--table-header-background;
 
     div {

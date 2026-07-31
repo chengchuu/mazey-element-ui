@@ -167,7 +167,7 @@
         if (this.tree.expandOnClickNode) {
           this.handleExpandIconClick();
         }
-        if (this.tree.checkOnClickNode && !this.node.disabled) {
+        if (this.tree.checkOnClickNode) {
           this.handleCheckChange(null, {
             target: { checked: !this.node.checked }
           });

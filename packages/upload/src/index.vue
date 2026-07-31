@@ -1,6 +1,7 @@
 <script>
 import UploadList from './upload-list';
 import Upload from './upload';
+import IframeUpload from './iframe-upload';
 import ElProgress from 'element-ui/packages/progress';
 import Migrating from 'element-ui/src/mixins/migrating';
 
@@ -14,7 +15,8 @@ export default {
   components: {
     ElProgress,
     UploadList,
-    Upload
+    Upload,
+    IframeUpload
   },
 
   provide() {
@@ -146,13 +148,11 @@ export default {
         raw: rawFile
       };
 
-      if (this.listType === 'picture-card' || this.listType === 'picture') {
-        try {
-          file.url = URL.createObjectURL(rawFile);
-        } catch (err) {
-          console.error('[Element Error][Upload]', err);
-          return;
-        }
+      try {
+        file.url = URL.createObjectURL(rawFile);
+      } catch (err) {
+        console.error(err);
+        return;
       }
 
       this.uploadFiles.push(file);
@@ -243,14 +243,6 @@ export default {
     }
   },
 
-  beforeDestroy() {
-    this.uploadFiles.forEach(file => {
-      if (file.url && file.url.indexOf('blob:') === 0) {
-        URL.revokeObjectURL(file.url);
-      }
-    });
-  },
-
   render(h) {
     let uploadList;
 
@@ -296,7 +288,9 @@ export default {
     };
 
     const trigger = this.$slots.trigger || this.$slots.default;
-    const uploadComponent = <upload {...uploadData}>{trigger}</upload>;
+    const uploadComponent = (typeof FormData !== 'undefined' || this.$isServer)
+      ? <upload {...uploadData}>{trigger}</upload>
+      : <iframeUpload {...uploadData}>{trigger}</iframeUpload>;
 
     return (
       <div>

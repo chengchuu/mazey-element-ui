@@ -9,13 +9,12 @@
     :aria-valuemax="max"
     tabindex="0">
     <span
-      v-for="(item, key) in max"
+      v-for="item in max"
       class="el-rate__item"
       @mousemove="setCurrentValue(item, $event)"
       @mouseleave="resetCurrentValue"
       @click="selectValue(item)"
-      :style="{ cursor: rateDisabled ? 'auto' : 'pointer' }"
-      :key="key">
+      :style="{ cursor: rateDisabled ? 'auto' : 'pointer' }">
       <i
         :class="[classes[item - 1], { 'hover': hoverIndex === item }]"
         class="el-rate__icon"

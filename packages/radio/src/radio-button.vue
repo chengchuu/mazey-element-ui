@@ -25,10 +25,7 @@
       @focus="focus = true"
       @blur="focus = false"
     >
-    <span
-      class="el-radio-button__inner"
-      :style="value === label ? activeStyle : null"
-      @keydown.stop>
+    <span class="el-radio-button__inner" :style="value === label ? activeStyle : null">
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>

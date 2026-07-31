@@ -19,18 +19,15 @@
   >
     <el-input
       ref="input"
-      :readonly="readonly"
+      :readonly="!filterable"
       :placeholder="currentLabels.length ? undefined : placeholder"
       v-model="inputValue"
       @input="debouncedInputChange"
       @focus="handleFocus"
       @blur="handleBlur"
-      @compositionstart.native="handleComposition"
-      @compositionend.native="handleComposition"
       :validate-event="false"
       :size="size"
       :disabled="cascaderDisabled"
-      :class="{ 'is-focus': menuVisible }"
     >
       <template slot="suffix">
         <i
@@ -47,11 +44,11 @@
         ></i>
       </template>
     </el-input>
-    <span class="el-cascader__label" v-show="inputValue === '' && !isOnComposition">
+    <span class="el-cascader__label" v-show="inputValue === ''">
       <template v-if="showAllLevels">
         <template v-for="(label, index) in currentLabels">
           {{ label }}
-          <span v-if="index < currentLabels.length - 1" :key="index"> {{ separator }} </span>
+          <span v-if="index < currentLabels.length - 1"> {{ separator }} </span>
         </template>
       </template>
       <template v-else>
@@ -71,7 +68,7 @@ import emitter from 'element-ui/src/mixins/emitter';
 import Locale from 'element-ui/src/mixins/locale';
 import { t } from 'element-ui/src/locale';
 import debounce from 'throttle-debounce/debounce';
-import { generateId, escapeRegexpString } from 'element-ui/src/utils/util';
+import { generateId } from 'element-ui/src/utils/util';
 
 const popperMixin = {
   props: {
@@ -181,10 +178,7 @@ export default {
       menuVisible: false,
       inputHover: false,
       inputValue: '',
-      flatOptions: null,
-      id: generateId(),
-      needFocus: true,
-      isOnComposition: false
+      flatOptions: null
     };
   },
 
@@ -222,9 +216,8 @@ export default {
     cascaderDisabled() {
       return this.disabled || (this.elForm || {}).disabled;
     },
-    readonly() {
-      const isIE = !this.$isServer && !isNaN(Number(document.documentMode));
-      return !this.filterable || (!isIE && !this.menuVisible);
+    id() {
+      return generateId();
     }
   },
 
@@ -287,11 +280,7 @@ export default {
     hideMenu() {
       this.inputValue = '';
       this.menu.visible = false;
-      if (this.needFocus) {
-        this.$refs.input.focus();
-      } else {
-        this.needFocus = true;
-      }
+      this.$refs.input.focus();
     },
     handleActiveItemChange(value) {
       this.$nextTick(_ => {
@@ -338,8 +327,7 @@ export default {
       }
 
       let filteredFlatOptions = flatOptions.filter(optionsStack => {
-        return optionsStack.some(option => new RegExp(escapeRegexpString(value), 'i')
-          .test(option[this.labelKey]));
+        return optionsStack.some(option => new RegExp(value, 'i').test(option[this.labelKey]));
       });
 
       if (filteredFlatOptions.length > 0) {
@@ -398,10 +386,7 @@ export default {
       ev.stopPropagation();
       this.handlePick([], true);
     },
-    handleClickoutside(pickFinished = false) {
-      if (this.menuVisible && !pickFinished) {
-        this.needFocus = false;
-      }
+    handleClickoutside() {
       this.menuVisible = false;
     },
     handleClick() {
@@ -418,9 +403,6 @@ export default {
     },
     handleBlur(event) {
       this.$emit('blur', event);
-    },
-    handleComposition(event) {
-      this.isOnComposition = event.type !== 'compositionend';
     }
   },
 

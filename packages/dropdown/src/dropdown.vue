@@ -66,14 +66,16 @@
         menuItems: null,
         menuItemsArray: null,
         dropdownElm: null,
-        focusing: false,
-        listId: `dropdown-menu-${generateId()}`
+        focusing: false
       };
     },
 
     computed: {
       dropdownSize() {
         return this.size || (this.$ELEMENT || {}).size;
+      },
+      listId() {
+        return `dropdown-menu-${generateId()}`;
       }
     },
 
@@ -167,7 +169,7 @@
         } else if (keyCode === 13) { // enter选中
           this.triggerElm.focus();
           target.click();
-          if (this.hideOnClick) { // click关闭
+          if (!this.hideOnClick) { // click关闭
             this.visible = false;
           }
         } else if ([9, 27].indexOf(keyCode) > -1) { // tab // esc

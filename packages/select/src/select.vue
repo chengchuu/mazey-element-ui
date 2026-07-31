@@ -47,7 +47,7 @@
         class="el-select__input"
         :class="[selectSize ? `is-${ selectSize }` : '']"
         :disabled="selectDisabled"
-        :autocomplete="autoComplete || autocomplete"
+        :autocomplete="autoComplete"
         @focus="handleFocus"
         @blur="softFocus = false"
         @click.stop
@@ -62,7 +62,8 @@
         @compositionupdate="handleComposition"
         @compositionend="handleComposition"
         v-model="query"
-        @input="debouncedQueryChange"
+        @input="e => handleQueryChange(e.target.value)"
+        :debounce="remote ? 300 : 0"
         v-if="filterable"
         :style="{ width: inputLength + 'px', 'max-width': inputWidth - 42 + 'px' }"
         ref="input">
@@ -74,7 +75,7 @@
       :placeholder="currentPlaceholder"
       :name="name"
       :id="id"
-      :autocomplete="autoComplete || autocomplete"
+      :auto-complete="autoComplete"
       :size="selectSize"
       :disabled="selectDisabled"
       :readonly="readonly"
@@ -111,8 +112,9 @@
           tag="ul"
           wrap-class="el-select-dropdown__wrap"
           view-class="el-select-dropdown__list"
+          class="cv-recommend-select-options"
           ref="scrollbar"
-          :class="{ 'is-empty': !allowCreate && query && filteredOptionsCount === 0, 'cv-recommend-select-options': isRecommend }"
+          :class="{ 'is-empty': !allowCreate && query && filteredOptionsCount === 0, 'cv-recommend-select-options': name === 'cv-recommend-select' || isRecommend }"
           v-show="options.length > 0 && !loading">
           <el-option
             :value="query"
@@ -151,6 +153,12 @@
   import { valueEquals } from 'element-ui/src/utils/util';
   import NavigationMixin from './navigation-mixin';
   import { isKorean } from 'element-ui/src/utils/shared';
+
+  const sizeMap = {
+    'medium': 36,
+    'small': 32,
+    'mini': 28
+  };
 
   export default {
     mixins: [Emitter, Locale, Focus('reference'), NavigationMixin],
@@ -192,7 +200,6 @@
           this.inputHovering &&
           !this.multiple &&
           this.value !== undefined &&
-          this.value !== null &&
           this.value !== '';
         return criteria ? 'circle-close is-show-close' : (this.remote && this.filterable ? '' : 'arrow-up');
       },
@@ -253,18 +260,9 @@
       value: {
         required: true
       },
-      autocomplete: {
-        type: String,
-        default: 'off'
-      },
-      /** @Deprecated in next major version */
       autoComplete: {
         type: String,
-        validator(val) {
-          process.env.NODE_ENV !== 'production' &&
-            console.warn('[Element Warn][Select]\'auto-complete\' property will be deprecated in next major version. please use \'autocomplete\' instead.');
-          return true;
-        }
+        default: 'off'
       },
       automaticDropdown: Boolean,
       size: String,
@@ -317,7 +315,6 @@
         selected: this.multiple ? [] : {},
         inputLength: 20,
         inputWidth: 0,
-        initialInputHeight: 0,
         cachedPlaceHolder: '',
         optionsCount: 0,
         filteredOptionsCount: 0,
@@ -346,7 +343,7 @@
         this.cachedPlaceHolder = this.currentPlaceholder = val;
       },
 
-      value(val, oldVal) {
+      value(val) {
         if (this.multiple) {
           this.resetInputHeight();
           if (val.length > 0 || (this.$refs.input && this.query !== '')) {
@@ -362,9 +359,6 @@
         this.setSelected();
         if (this.filterable && !this.multiple) {
           this.inputLength = 20;
-        }
-        if (!valueEquals(val, oldVal)) {
-          this.dispatch('ElFormItem', 'el.form.change', val);
         }
       },
 
@@ -513,14 +507,13 @@
       emitChange(val) {
         if (!valueEquals(this.value, val)) {
           this.$emit('change', val);
+          this.dispatch('ElFormItem', 'el.form.change', val);
         }
       },
 
       getOption(value) {
         let option;
         const isObject = Object.prototype.toString.call(value).toLowerCase() === '[object object]';
-        const isNull = Object.prototype.toString.call(value).toLowerCase() === '[object null]';
-
         for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
           const cachedOption = this.cachedOptions[i];
           const isEqual = isObject
@@ -532,7 +525,7 @@
           }
         }
         if (option) return option;
-        const label = (!isObject && !isNull)
+        const label = !isObject
           ? value : '';
         let newOption = {
           value: value,
@@ -654,7 +647,7 @@
           let inputChildNodes = this.$refs.reference.$el.childNodes;
           let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
           const tags = this.$refs.tags;
-          const sizeInMap = this.initialInputHeight || 40;
+          const sizeInMap = sizeMap[this.selectSize] || 40;
           input.style.height = this.selected.length === 0
             ? sizeInMap + 'px'
             : Math.max(
@@ -856,12 +849,11 @@
         this.onInputChange();
       });
 
-      this.debouncedQueryChange = debounce(this.debounce, (e) => {
-        this.handleQueryChange(e.target.value);
-      });
-
       this.$on('handleOptionClick', this.handleOptionSelect);
       this.$on('setSelected', this.setSelected);
+      this.$on('fieldReset', () => {
+        this.dispatch('ElFormItem', 'el.form.change');
+      });
     },
 
     mounted() {
@@ -869,17 +861,12 @@
         this.currentPlaceholder = '';
       }
       addResizeListener(this.$el, this.handleResize);
-
-      const reference = this.$refs.reference;
-      if (reference && reference.$el) {
-        this.initialInputHeight = reference.$el.getBoundingClientRect().height;
-      }
       if (this.remote && this.multiple) {
         this.resetInputHeight();
       }
       this.$nextTick(() => {
-        if (reference && reference.$el) {
-          this.inputWidth = reference.$el.getBoundingClientRect().width;
+        if (this.$refs.reference && this.$refs.reference.$el) {
+          this.inputWidth = this.$refs.reference.$el.getBoundingClientRect().width;
         }
       });
       this.setSelected();

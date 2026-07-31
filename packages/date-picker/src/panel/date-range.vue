@@ -13,8 +13,7 @@
           <button
             type="button"
             class="el-picker-panel__shortcut"
-            v-for="(shortcut, key) in shortcuts"
-            :key="key"
+            v-for="shortcut in shortcuts"
             @click="handleShortcutClick(shortcut)">{{shortcut.text}}</button>
         </div>
         <div class="el-picker-panel__body">
@@ -31,7 +30,7 @@
                   @input.native="handleDateInput($event, 'min')"
                   @change.native="handleDateChange($event, 'min')" />
               </span>
-              <span class="el-date-range-picker__time-picker-wrap" v-clickoutside="handleMinTimeClose">
+              <span class="el-date-range-picker__time-picker-wrap" v-clickoutside="() => minTimePickerVisible = false">
                 <el-input
                   size="small"
                   :disabled="rangeState.selecting"
@@ -62,7 +61,7 @@
                   @input.native="handleDateInput($event, 'max')"
                   @change.native="handleDateChange($event, 'max')" />
               </span>
-              <span class="el-date-range-picker__time-picker-wrap" v-clickoutside="handleMaxTimeClose">
+              <span class="el-date-range-picker__time-picker-wrap" v-clickoutside="() => maxTimePickerVisible = false">
                 <el-input
                   size="small"
                   :disabled="rangeState.selecting"
@@ -176,7 +175,7 @@
           size="mini"
           class="el-picker-panel__link-btn"
           :disabled="btnDisabled"
-          @click="handleConfirm(false)">
+          @click="handleConfirm()">
           {{ t('el.datepicker.confirm') }}
         </el-button>
       </div>
@@ -191,7 +190,7 @@
     isDate,
     modifyDate,
     modifyTime,
-    modifyWithTimeString,
+    modifyWithDefaultTime,
     prevYear,
     nextYear,
     prevMonth,
@@ -227,7 +226,7 @@
 
     computed: {
       btnDisabled() {
-        return !(this.minDate && this.maxDate && !this.selecting && this.isValidValue([this.minDate, this.maxDate]));
+        return !(this.minDate && this.maxDate && !this.selecting);
       },
 
       leftLabel() {
@@ -387,6 +386,8 @@
         } else if (Array.isArray(newVal)) {
           this.minDate = isDate(newVal[0]) ? new Date(newVal[0]) : null;
           this.maxDate = isDate(newVal[1]) ? new Date(newVal[1]) : null;
+          // NOTE: currently, maxDate = minDate + 1 month
+          //       should allow them to be set individually in the future
           if (this.minDate) {
             this.leftDate = this.minDate;
             if (this.unlinkPanels && this.maxDate) {
@@ -497,8 +498,8 @@
 
       handleRangePick(val, close = true) {
         const defaultTime = this.defaultTime || [];
-        const minDate = modifyWithTimeString(val.minDate, defaultTime[0]);
-        const maxDate = modifyWithTimeString(val.maxDate, defaultTime[1]);
+        const minDate = modifyWithDefaultTime(val.minDate, defaultTime[0]);
+        const maxDate = modifyWithDefaultTime(val.maxDate, defaultTime[1]);
 
         if (this.maxDate === maxDate && this.minDate === minDate) {
           return;
@@ -537,10 +538,6 @@
         }
       },
 
-      handleMinTimeClose() {
-        this.minTimePickerVisible = false;
-      },
-
       handleMaxTimePick(value, visible, first) {
         if (this.maxDate && value) {
           this.maxDate = modifyTime(this.maxDate, value.getHours(), value.getMinutes(), value.getSeconds());
@@ -553,10 +550,6 @@
         if (this.maxDate && this.minDate && this.minDate.getTime() > this.maxDate.getTime()) {
           this.minDate = new Date(this.maxDate);
         }
-      },
-
-      handleMaxTimeClose() {
-        this.maxTimePickerVisible = false;
       },
 
       // leftPrev*, rightNext* need to take care of `unlinkPanels`
@@ -610,9 +603,7 @@
       },
 
       handleConfirm(visible = false) {
-        if (this.isValidValue([this.minDate, this.maxDate])) {
-          this.$emit('pick', [this.minDate, this.maxDate], visible);
-        }
+        this.$emit('pick', [this.minDate, this.maxDate], visible);
       },
 
       isValidValue(value) {
@@ -624,14 +615,6 @@
             ? !this.disabledDate(value[0]) && !this.disabledDate(value[1])
             : true
         );
-      },
-
-      resetView() {
-        // NOTE: this is a hack to reset {min, max}Date on picker open.
-        // TODO: correct way of doing so is to refactor {min, max}Date to be dependent on value and internal selection state
-        //       an alternative would be resetView whenever picker becomes visible, should also investigate date-panel's resetView
-        this.minDate = this.value && isDate(this.value[0]) ? new Date(this.value[0]) : null;
-        this.maxDate = this.value && isDate(this.value[0]) ? new Date(this.value[1]) : null;
       }
     },
 

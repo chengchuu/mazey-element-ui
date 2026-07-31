@@ -71,7 +71,7 @@ export default {
     },
     pagination: {
       goto: 'Git',
-      pagesize: '/sayfa',
+      pagesize: '/page',
       total: 'Toplam {total}',
       pageClassifier: ''
     },

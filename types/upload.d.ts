@@ -118,7 +118,4 @@ export declare class ElUpload extends ElementUIComponent {
 
   /** Abort specified file */
   abort (file: ElUploadInternalFileDetail): void
-
-  /** Upload the file list manually */
-  submit ():void;
 }

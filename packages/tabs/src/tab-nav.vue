@@ -28,8 +28,7 @@
         type: Function,
         default: noop
       },
-      type: String,
-      stretch: Boolean
+      type: String
     },
 
     data() {
@@ -87,7 +86,7 @@
         const navScroll = this.$refs.navScroll;
         const activeTabBounding = activeTab.getBoundingClientRect();
         const navScrollBounding = navScroll.getBoundingClientRect();
-        const maxOffset = nav.offsetWidth - navScrollBounding.width;
+        const navBounding = nav.getBoundingClientRect();
         const currentOffset = this.navOffset;
         let newOffset = currentOffset;
 
@@ -97,9 +96,10 @@
         if (activeTabBounding.right > navScrollBounding.right) {
           newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
         }
-
-        newOffset = Math.max(newOffset, 0);
-        this.navOffset = Math.min(newOffset, maxOffset);
+        if (navBounding.right < navScrollBounding.right) {
+          newOffset = nav.offsetWidth - navScrollBounding.width;
+        }
+        this.navOffset = Math.max(newOffset, 0);
       },
       update() {
         if (!this.$refs.nav) return;
@@ -187,7 +187,6 @@
         type,
         panes,
         editable,
-        stretch,
         onTabClick,
         onTabRemove,
         navStyle,
@@ -247,13 +246,7 @@
         <div class={['el-tabs__nav-wrap', scrollable ? 'is-scrollable' : '', `is-${ this.rootTabs.tabPosition }`]}>
           {scrollBtn}
           <div class={['el-tabs__nav-scroll']} ref="navScroll">
-            <div
-              class={['el-tabs__nav', `is-${ this.rootTabs.tabPosition }`, stretch && ['top', 'bottom'].indexOf(this.rootTabs.tabPosition) !== -1 ? 'is-stretch' : '']}
-              ref="nav"
-              style={navStyle}
-              role="tablist"
-              on-keydown={ changeTab }
-            >
+            <div class="el-tabs__nav" ref="nav" style={navStyle} role="tablist" on-keydown={ changeTab }>
               {!type ? <tab-bar tabs={panes}></tab-bar> : null}
               {tabs}
             </div>
@@ -277,3 +270,4 @@
     }
   };
 </script>
+

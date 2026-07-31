@@ -9,17 +9,15 @@
     <tbody>
     <tr>
       <th v-if="showWeekNumber">{{ t('el.datepicker.week') }}</th>
-      <th v-for="(week, key) in WEEKS" :key="key">{{ t('el.datepicker.weeks.' + week) }}</th>
+      <th v-for="week in WEEKS">{{ t('el.datepicker.weeks.' + week) }}</th>
     </tr>
     <tr
       class="el-date-table__row"
-      v-for="(row, key) in rows"
-      :class="{ current: isWeekActive(row[1]) }"
-      :key="key">
+      v-for="row in rows"
+      :class="{ current: isWeekActive(row[1]) }">
       <td
-        v-for="(cell, key) in row"
-        :class="getCellClasses(cell)"
-        :key="key">
+        v-for="cell in row"
+        :class="getCellClasses(cell)">
         <div>
           <span>
             {{ cell.text }}
@@ -35,21 +33,12 @@
   import { getFirstDayOfMonth, getDayCountOfMonth, getWeekNumber, getStartDateOfMonth, nextDate, isDate } from '../util';
   import { hasClass } from 'element-ui/src/utils/dom';
   import Locale from 'element-ui/src/mixins/locale';
-  import { arrayFindIndex, arrayFind, coerceTruthyValueToArray } from 'element-ui/src/utils/util';
 
   const WEEKS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
   const clearHours = function(time) {
     const cloneDate = new Date(time);
     cloneDate.setHours(0, 0, 0, 0);
     return cloneDate.getTime();
-  };
-
-  // remove the first element that satisfies `pred` from arr
-  // return a new array if modification occurs
-  // return the original array otherwise
-  const removeFromArray = function(arr, pred) {
-    const idx = typeof pred === 'function' ? arrayFindIndex(arr, pred) : arr.indexOf(pred);
-    return idx >= 0 ? [...arr.slice(0, idx), ...arr.slice(idx + 1)] : arr;
   };
 
   export default {
@@ -83,6 +72,10 @@
       },
 
       disabledDate: {},
+
+      selectedDate: {
+        type: Array
+      },
 
       minDate: {},
 
@@ -140,7 +133,7 @@
 
         const startDate = this.startDate;
         const disabledDate = this.disabledDate;
-        const selectedDate = this.selectionMode === 'dates' ? coerceTruthyValueToArray(this.value) : [];
+        const selectedDate = this.selectedDate || this.value;
         const now = clearHours(new Date());
 
         for (let i = 0; i < 6; i++) {
@@ -193,9 +186,10 @@
               }
             }
 
-            let cellDate = new Date(time);
-            cell.disabled = typeof disabledDate === 'function' && disabledDate(cellDate);
-            cell.selected = arrayFind(selectedDate, date => date.getTime() === cellDate.getTime());
+            let newDate = new Date(time);
+            cell.disabled = typeof disabledDate === 'function' && disabledDate(newDate);
+            cell.selected = Array.isArray(selectedDate) &&
+              selectedDate.filter(date => date.toString() === newDate.toString())[0];
 
             this.$set(row, this.showWeekNumber ? j + 1 : j, cell);
           }
@@ -239,6 +233,10 @@
         if (newVal && !oldVal) {
           this.rangeState.selecting = false;
           this.markRange(newVal);
+          this.$emit('pick', {
+            minDate: this.minDate,
+            maxDate: this.maxDate
+          });
         }
       }
     },
@@ -487,11 +485,19 @@
             date: newDate
           });
         } else if (selectionMode === 'dates') {
-          const value = this.value || [];
-          const newValue = cell.selected
-            ? removeFromArray(value, date => date.getTime() === newDate.getTime())
-            : [...value, newDate];
-          this.$emit('pick', newValue);
+          let selectedDate = this.selectedDate;
+
+          if (!cell.selected) {
+            selectedDate.push(newDate);
+          } else {
+            selectedDate.forEach((date, index) => {
+              if (date.toString() === newDate.toString()) {
+                selectedDate.splice(index, 1);
+              }
+            });
+          }
+
+          this.$emit('select', selectedDate);
         }
       }
     }

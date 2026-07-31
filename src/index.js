@@ -145,7 +145,7 @@ const install = function(Vue, opts = {}) {
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
 
-  components.forEach(component => {
+  components.map(component => {
     Vue.component(component.name, component);
   });
 
@@ -172,7 +172,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = {
-  version: '2.0.0',
+  version: '1.0.9',
   locale: locale.use,
   i18n: locale.i18n,
   install,

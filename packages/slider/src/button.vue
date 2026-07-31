@@ -218,7 +218,7 @@
       },
 
       setPosition(newPosition) {
-        if (newPosition === null || isNaN(newPosition)) return;
+        if (newPosition === null) return;
         if (newPosition < 0) {
           newPosition = 0;
         } else if (newPosition > 100) {
