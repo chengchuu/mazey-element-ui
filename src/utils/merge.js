@@ -1,15 +1,5 @@
-export default function(target) {
-  for (let i = 1, j = arguments.length; i < j; i++) {
-    let source = arguments[i] || {};
-    for (let prop in source) {
-      if (source.hasOwnProperty(prop)) {
-        let value = source[prop];
-        if (value !== undefined) {
-          target[prop] = value;
-        }
-      }
-    }
-  }
+import { assignDefined } from 'mazey';
 
-  return target;
+export default function(target, ...sources) {
+  return assignDefined(target, ...sources.map(source => source || {}));
 };
