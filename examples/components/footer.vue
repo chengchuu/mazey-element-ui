@@ -3,11 +3,11 @@
     <div class="container">
       <div class="footer-main">
         <h4>{{ langConfig.links }}</h4>
-        <a href="https://github.com/ElemeFE/element" class="footer-main-link" target="_blank">{{ langConfig.repo }}</a>
-        <a href="https://github.com/ElemeFE/element/releases" class="footer-main-link" target="_blank">{{ langConfig.changelog }}</a>
-        <a href="https://github.com/ElemeFE/element/blob/dev/FAQ.md" class="footer-main-link" target="_blank">{{ langConfig.faq }}</a>
+        <a href="https://github.com/chengchuu/mazey-element-ui" class="footer-main-link" target="_blank">{{ langConfig.repo }}</a>
+        <a href="https://github.com/chengchuu/mazey-element-ui/releases" class="footer-main-link" target="_blank">{{ langConfig.changelog }}</a>
+        <a href="https://github.com/chengchuu/mazey-element-ui/blob/main/FAQ.md" class="footer-main-link" target="_blank">{{ langConfig.faq }}</a>
         <a href="https://github.com/ElementUI/element-starter" class="footer-main-link" target="_blank">{{ langConfig.starter }}</a>
-        <a :href="'/#/' + lang + '/component/custom-theme'" class="footer-main-link" target="_blank">{{ langConfig.theme }}</a>
+        <a :href="'/mazey-element-ui/#/' + lang + '/component/custom-theme'" class="footer-main-link">{{ langConfig.theme }}</a>
         <a href="https://github.com/elemefe/element-react" class="footer-main-link" target="_blank">Element-React</a>
         <a href="https://github.com/ElemeFE/element-angular" class="footer-main-link" target="_blank">Element-Angular</a>
         <a href="https://github.com/eleme/morjs" class="footer-main-link" target="_blank">MorJS</a>
@@ -15,38 +15,13 @@
       <div class="footer-main">
         <h4>{{ langConfig.community }}</h4>
         <a :href="gitterLink" class="footer-main-link" target="_blank">{{ langConfig.gitter }}</a>
-        <a href="https://github.com/ElemeFE/element/issues" class="footer-main-link" target="_blank">{{ langConfig.feedback }}</a>
-        <a :href="`https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.${ lang }.md`" class="footer-main-link" target="_blank">{{ langConfig.contribution }}</a>
+        <a href="https://github.com/chengchuu/mazey-element-ui/issues" class="footer-main-link" target="_blank">{{ langConfig.feedback }}</a>
+        <a :href="`https://github.com/chengchuu/mazey-element-ui/blob/main/.github/CONTRIBUTING.${ lang }.md`" class="footer-main-link" target="_blank">{{ langConfig.contribution }}</a>
         <a href="https://segmentfault.com/t/element-ui" class="footer-main-link" target="_blank">SegmentFault</a>
         <a href="https://github.com/ElementUI/awesome-element" class="footer-main-link" target="_blank">Awesome Element</a>
       </div>
       <div class="footer-social">
-        <p class="footer-social-title">Element {{ version && version.slice(0, 3) }} Fullerene</p>
-        <el-popover
-          ref="weixin"
-          placement="top"
-          width="120"
-          popper-class="footer-popover"
-          trigger="hover">
-          <div class="footer-popover-title">{{ langConfig.elemeTech }}</div>
-          <img src="https://gw.alicdn.com/imgextra/i4/O1CN01dBDgJP1t4R3qikGBP_!!6000000005848-0-tps-344-344.jpg" alt="">
-        </el-popover>
-        <el-popover
-          ref="weixin"
-          placement="top"
-          width="120"
-          popper-class="footer-popover"
-          trigger="hover">
-          <div class="footer-popover-title">{{ langConfig.elemeDesign }}</div>
-          <img src="https://gw.alicdn.com/imgextra/i4/O1CN015ha1O71yg3g1QaKEi_!!6000000006607-0-tps-1280-1280.jpg" alt="">
-        </el-popover>
-        <i class="doc-icon-weixin elementdoc" v-popover:weixin></i>
-        <a href="https://github.com/elemefe" target="_blank">
-          <i class="doc-icon-github elementdoc"></i>
-        </a>
-        <a :href="gitterLink" target="_blank">
-          <i class="doc-icon-gitter elementdoc"></i>
-        </a>
+        <p class="footer-social-title">Mazey Element UI {{ version }}</p>
       </div>
     </div>
   </footer>

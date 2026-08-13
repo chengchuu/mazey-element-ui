@@ -1,6 +1,6 @@
 {
   "framework": "vue",
-  "name": "element-ui",
+  "name": "mazey-element-ui",
   "version": "2.15.9",
   "description-markup": "markdown",
   "contributions": {
@@ -9,7 +9,7 @@
         {
           "name": "ElAlert",
           "description": "Displays important alert messages.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/alert",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/alert",
           "props": [
             {
               "name": "type",
@@ -79,7 +79,7 @@
         {
           "name": "ElAside",
           "description": "Container for side sections (usually a side nav).",
-          "doc-url": "https://element.eleme.io/#/en-US/component/container",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/container",
           "props": [
             {
               "name": "width",
@@ -91,7 +91,7 @@
         },
         {
           "name": "ElAutocomplete",
-          "doc-url": "https://element.eleme.io/#/en-US/component/input#autocomplete-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/input#autocomplete-attributes",
           "props": [
             {
               "name": "focus",
@@ -206,7 +206,7 @@
         {
           "name": "ElAvatar",
           "description": "Avatars can be used to represent people or objects. It supports images, Icons, or characters.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/avatar",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/avatar",
           "props": [
             {
               "name": "fit",
@@ -259,7 +259,7 @@
         {
           "name": "ElBacktop",
           "description": "A button to back to top",
-          "doc-url": "https://element.eleme.io/#/en-US/component/backtop",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/backtop",
           "props": [
             {
               "name": "bottom",
@@ -297,7 +297,7 @@
         {
           "name": "ElBadge",
           "description": "A number or status mark on buttons and icons.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/badge",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/badge",
           "props": [
             {
               "name": "isDot",
@@ -331,7 +331,7 @@
         {
           "name": "ElBreadcrumb",
           "description": "Displays the location of the current page, making it easier to browser back.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/breadcrumb",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/breadcrumb",
           "props": [
             {
               "name": "separatorClass",
@@ -348,7 +348,7 @@
         },
         {
           "name": "ElBreadcrumbItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/breadcrumb",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/breadcrumb",
           "props": [
             {
               "name": "replace",
@@ -366,7 +366,7 @@
         {
           "name": "ElButton",
           "description": "Commonly used button.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/button",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/button",
           "props": [
             {
               "name": "type",
@@ -430,12 +430,12 @@
         {
           "name": "ElButtonGroup",
           "description": "Displayed as a button group, can be used to group a series of similar operations.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/button"
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/button"
         },
         {
           "name": "ElCalendar",
           "description": "Display date.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/calendar",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/calendar",
           "props": [
             {
               "name": "range",
@@ -464,7 +464,7 @@
         {
           "name": "ElCard",
           "description": "Integrate information in a card container.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/card",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/card",
           "props": [
             {
               "name": "shadow",
@@ -498,7 +498,7 @@
         {
           "name": "ElCarousel",
           "description": "Loop a series of images or texts in a limited space",
-          "doc-url": "https://element.eleme.io/#/en-US/component/carousel",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/carousel",
           "props": [
             {
               "name": "arrow",
@@ -562,14 +562,14 @@
               {
                 "name": "change",
                 "description": "triggers when the active slide switches",
-                "doc-url": "https://element.eleme.io/#/en-US/component/carousel#carousel-events"
+                "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/carousel#carousel-events"
               }
             ]
           }
         },
         {
           "name": "ElCarouselItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/carousel#carousel-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/carousel#carousel-item-attributes",
           "props": [
             {
               "name": "name",
@@ -586,7 +586,7 @@
         {
           "name": "ElCascader",
           "description": "If the options have a clear hierarchical structure, Cascader can be used to view and select them.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/cascader",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/cascader",
           "props": [
             {
               "name": "debounce",
@@ -667,7 +667,7 @@
         },
         {
           "name": "ElCascaderPanel",
-          "doc-url": "https://element.eleme.io/#/en-US/component/cascader#cascaderpanel-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/cascader#cascaderpanel-attributes",
           "props": [
             {
               "name": "options",
@@ -700,7 +700,7 @@
         {
           "name": "ElCheckbox",
           "description": "A group of options for multiple choices.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/checkbox",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/checkbox",
           "props": [
             {
               "name": "indeterminate",
@@ -756,7 +756,7 @@
         },
         {
           "name": "ElCheckboxButton",
-          "doc-url": "https://element.eleme.io/#/en-US/component/checkbox#checkbox-group-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/checkbox#checkbox-group-attributes",
           "props": [
             {
               "name": "checked",
@@ -792,7 +792,7 @@
         },
         {
           "name": "ElCheckboxGroup",
-          "doc-url": "https://element.eleme.io/#/en-US/component/checkbox#checkbox-group-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/checkbox#checkbox-group-attributes",
           "props": [
             {
               "name": "fill",
@@ -884,7 +884,7 @@
         {
           "name": "ElCollapse",
           "description": "Use Collapse to store contents.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/collapse",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/collapse",
           "props": [
             {
               "name": "accordion",
@@ -900,7 +900,7 @@
         },
         {
           "name": "ElCollapseItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/collapse#collapse-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/collapse#collapse-item-attributes",
           "props": [
             {
               "name": "name",
@@ -932,7 +932,7 @@
         {
           "name": "ElColorPicker",
           "description": "ColorPicker is a color selector supporting multiple color formats.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/color-picker",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/color-picker",
           "props": [
             {
               "name": "showAlpha",
@@ -968,7 +968,7 @@
         {
           "name": "ElContainer",
           "description": "Wrapper container. When nested with a `<el-header>` or `<el-footer>`, all its child elements will be vertically arranged. Otherwise horizontally.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/container",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/container",
           "props": [
             {
               "name": "direction",
@@ -980,7 +980,7 @@
         {
           "name": "ElDatePicker",
           "description": "Use Date Picker for date input.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/date-picker",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/date-picker",
           "props": [
             {
               "name": "defaultValue",
@@ -1083,7 +1083,7 @@
         {
           "name": "ElDescriptions",
           "description": "Display multiple fields in list form.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/descriptions",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/descriptions",
           "props": [
             {
               "name": "labelStyle",
@@ -1154,7 +1154,7 @@
         },
         {
           "name": "ElDescriptionsItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/descriptions#descriptions-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/descriptions#descriptions-item-attributes",
           "props": [
             {
               "name": "labelStyle",
@@ -1201,7 +1201,7 @@
         {
           "name": "ElDialog",
           "description": "Informs users while preserving the current page state.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/dialog",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/dialog",
           "props": [
             {
               "name": "closeOnPressEscape",
@@ -1287,7 +1287,7 @@
         {
           "name": "ElDivider",
           "description": "The dividing line that separates the content.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/divider",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/divider",
           "props": [
             {
               "name": "vertical",
@@ -1304,7 +1304,7 @@
         {
           "name": "ElDrawer",
           "description": "Sometimes, `Dialog` does not always satisfy our requirements, let's say you have a massive form, or you need space to display something like `terms & conditions`, `Drawer` has almost identical API with `Dialog`, but it introduces different user experience.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/drawer",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/drawer",
           "props": [
             {
               "name": "closeOnPressEscape",
@@ -1381,7 +1381,7 @@
         {
           "name": "ElDropdown",
           "description": "Toggleable menu for displaying lists of links and actions.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/dropdown",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/dropdown",
           "props": [
             {
               "name": "type",
@@ -1447,7 +1447,7 @@
         },
         {
           "name": "ElDropdownItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/dropdown#dropdown-menu-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/dropdown#dropdown-menu-item-attributes",
           "props": [
             {
               "name": "divided",
@@ -1473,13 +1473,13 @@
         },
         {
           "name": "ElDropdownMenu",
-          "doc-url": "https://element.eleme.io/#/en-US/component/dropdown",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/dropdown",
           "props": []
         },
         {
           "name": "ElEmpty",
           "description": "Placeholder hints for empty states.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/empty",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/empty",
           "props": [
             {
               "name": "image",
@@ -1515,7 +1515,7 @@
         {
           "name": "ElFooter",
           "description": "Container for footers.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/container",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/container",
           "props": [
             {
               "name": "height",
@@ -1527,7 +1527,7 @@
         {
           "name": "ElForm",
           "description": "Form consists of `input`, `radio`, `select`, `checkbox` and so on. With form, you can collect, verify and submit data.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/form",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/form",
           "props": [
             {
               "name": "rules",
@@ -1598,7 +1598,7 @@
         },
         {
           "name": "ElFormItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/form#form-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/form#form-item-attributes",
           "props": [
             {
               "name": "labelWidth",
@@ -1665,7 +1665,7 @@
         {
           "name": "ElHeader",
           "description": "Container for headers.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/container",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/container",
           "props": [
             {
               "name": "height",
@@ -1677,12 +1677,12 @@
         {
           "name": "ElIcon",
           "description": "Element provides a set of common icons.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/icon",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/icon",
           "props": [
             {
               "name": "name",
               "description": "Icon name",
-              "doc-url": "https://element.eleme.io/#/en-US/component/icon#icons",
+              "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/icon#icons",
               "type": "string"
             }
           ]
@@ -1690,7 +1690,7 @@
         {
           "name": "ElImage",
           "description": "Besides the native features of img, support lazy load, custom placeholder and load failure, etc.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/image",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/image",
           "props": [
             {
               "name": "fit",
@@ -1745,7 +1745,7 @@
         {
           "name": "ElInput",
           "description": "Input data using mouse or keyboard.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/input",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/input",
           "props": [
             {
               "name": "type",
@@ -1894,7 +1894,7 @@
         {
           "name": "ElInputNumber",
           "description": "Input numerical values with a customizable range.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/input-number",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/input-number",
           "props": [
             {
               "name": "controls",
@@ -1961,7 +1961,7 @@
         {
           "name": "ElLink",
           "description": "Text hyperlink",
-          "doc-url": "https://element.eleme.io/#/en-US/component/link",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/link",
           "props": [
             {
               "name": "underline",
@@ -1998,13 +1998,13 @@
         {
           "name": "ElMain",
           "description": "Container for main sections.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/container",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/container",
           "props": []
         },
         {
           "name": "ElMenu",
           "description": "Menu that provides navigation for your website.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/menu",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/menu",
           "props": [
             {
               "name": "defaultOpeneds",
@@ -2065,7 +2065,7 @@
         },
         {
           "name": "ElMenuItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/menu#menu-item-attribute",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/menu#menu-item-attribute",
           "props": [
             {
               "name": "index",
@@ -2081,7 +2081,7 @@
         },
         {
           "name": "ElMenuItemGroup",
-          "doc-url": "https://element.eleme.io/#/en-US/component/menu#menu-item-attribute",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/menu#menu-item-attribute",
           "props": [
             {
               "name": "title",
@@ -2092,7 +2092,7 @@
         },
         {
           "name": "ElOption",
-          "doc-url": "https://element.eleme.io/#/en-US/component/select#option-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/select#option-attributes",
           "props": [
             {
               "name": "disabled",
@@ -2113,7 +2113,7 @@
         },
         {
           "name": "ElOptionGroup",
-          "doc-url": "https://element.eleme.io/#/en-US/component/select#option-group-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/select#option-group-attributes",
           "props": [
             {
               "name": "disabled",
@@ -2130,7 +2130,7 @@
         {
           "name": "ElPageHeader",
           "description": "If path of the page is simple, it is recommended to use PageHeader instead of the Breadcrumb.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/page-header",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/page-header",
           "props": [
             {
               "name": "title",
@@ -2157,7 +2157,7 @@
         {
           "name": "ElPagination",
           "description": "If you have too much data to display in one page, use pagination.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/pagination",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/pagination",
           "props": [
             {
               "name": "small",
@@ -2230,7 +2230,7 @@
         {
           "name": "ElPopconfirm",
           "description": "A simple confirmation dialog of an element click action.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/popconfirm",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/popconfirm",
           "props": [
             {
               "name": "visibleArrow",
@@ -2357,7 +2357,7 @@
         {
           "name": "ElPopover",
           "description": "Similar to Tooltip, Popover is also built with `Vue-popper`",
-          "doc-url": "https://element.eleme.io/#/en-US/component/popover",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/popover",
           "props": [
             {
               "name": "visibleArrow",
@@ -2449,7 +2449,7 @@
         {
           "name": "ElProgress",
           "description": "Progress is used to show the progress of current operation, and inform the user the current status.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/progress",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/progress",
           "props": [
             {
               "name": "showText",
@@ -2501,7 +2501,7 @@
         {
           "name": "ElRadio",
           "description": "Single selection among multiple options.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/radio",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/radio",
           "props": [
             {
               "name": "border",
@@ -2532,7 +2532,7 @@
         },
         {
           "name": "ElRadioButton",
-          "doc-url": "https://element.eleme.io/#/en-US/component/radio#radio-group-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/radio#radio-group-attributes",
           "props": [
             {
               "name": "name",
@@ -2558,7 +2558,7 @@
         },
         {
           "name": "ElRadioGroup",
-          "doc-url": "https://element.eleme.io/#/en-US/component/radio#radio-group-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/radio#radio-group-attributes",
           "props": [
             {
               "name": "fill",
@@ -2585,7 +2585,7 @@
         {
           "name": "ElRate",
           "description": "Used for rating",
-          "doc-url": "https://element.eleme.io/#/en-US/component/rate",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/rate",
           "props": [
             {
               "name": "showText",
@@ -2672,7 +2672,7 @@
         {
           "name": "ElResult",
           "description": "Used to give feedback on the result of user's operation or access exception.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/result",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/result",
           "props": [
             {
               "name": "subTitle",
@@ -2742,7 +2742,7 @@
         {
           "name": "ElSelect",
           "description": "When there are plenty of options, use a drop-down menu to display and select desired ones.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/select",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/select",
           "props": [
             {
               "name": "remoteMethod",
@@ -2877,7 +2877,7 @@
         {
           "name": "ElSkeleton",
           "description": "When loading data, and you need a rich experience for visual and interactions for your end users, you can choose `skeleton`.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/skeleton",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/skeleton",
           "props": [
             {
               "name": "count",
@@ -2918,7 +2918,7 @@
         },
         {
           "name": "ElSkeletonItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/skeleton#skeleton-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/skeleton#skeleton-item-attributes",
           "props": [
             {
               "name": "variant",
@@ -2930,7 +2930,7 @@
         {
           "name": "ElSlider",
           "description": "Drag the slider within a fixed range.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/slider",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/slider",
           "props": [
             {
               "name": "showInputControls",
@@ -3046,7 +3046,7 @@
         },
         {
           "name": "ElStep",
-          "doc-url": "https://element.eleme.io/#/en-US/component/steps#step-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/steps#step-attributes",
           "props": [
             {
               "name": "status",
@@ -3087,7 +3087,7 @@
         {
           "name": "ElSteps",
           "description": "Guide the user to complete tasks in accordance with the process. Its steps can be set according to the actual application scenario and the number of the steps can't be less than 2.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/steps",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/steps",
           "props": [
             {
               "name": "processStatus",
@@ -3128,7 +3128,7 @@
         },
         {
           "name": "ElSubmenu",
-          "doc-url": "https://element.eleme.io/#/en-US/component/menu#submenu-attribute",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/menu#submenu-attribute",
           "props": [
             {
               "name": "index",
@@ -3165,7 +3165,7 @@
         {
           "name": "ElSwitch",
           "description": "Switch is used for switching between two opposing states.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/switch",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/switch",
           "props": [
             {
               "name": "activeText",
@@ -3236,7 +3236,7 @@
         },
         {
           "name": "ElTabPane",
-          "doc-url": "https://element.eleme.io/#/en-US/component/tabs#tab-pane-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/tabs#tab-pane-attributes",
           "props": [
             {
               "name": "name",
@@ -3268,7 +3268,7 @@
         {
           "name": "ElTable",
           "description": "Display multiple data with similar format. You can sort, filter, compare your data in a table.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/table",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/table",
           "props": [
             {
               "name": "showSummary",
@@ -3415,7 +3415,7 @@
         },
         {
           "name": "ElTableColumn",
-          "doc-url": "https://element.eleme.io/#/en-US/component/table#table-column-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/table#table-column-attributes",
           "props": [
             {
               "name": "type",
@@ -3534,7 +3534,7 @@
         {
           "name": "ElTabs",
           "description": "Divide data collections which are related yet belong to different types.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/tabs",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/tabs",
           "props": [
             {
               "name": "type",
@@ -3576,7 +3576,7 @@
         {
           "name": "ElTag",
           "description": "Used for marking and selection.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/tag",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/tag",
           "props": [
             {
               "name": "disableTransitions",
@@ -3618,7 +3618,7 @@
         {
           "name": "ElTimePicker",
           "description": "Use Time Picker for time input.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/time-picker",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/time-picker",
           "props": [
             {
               "name": "align",
@@ -3694,7 +3694,7 @@
         },
         {
           "name": "ElTimeSelect",
-          "doc-url": "https://element.eleme.io/#/en-US/component/time-picker#time-select-options",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/time-picker#time-select-options",
           "props": [
             {
               "name": "align",
@@ -3751,7 +3751,7 @@
         {
           "name": "ElTimeline",
           "description": "Visually display timeline.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/timeline",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/timeline",
           "props": [
             {
               "name": "reverse",
@@ -3761,7 +3761,7 @@
         },
         {
           "name": "ElTimelineItem",
-          "doc-url": "https://element.eleme.io/#/en-US/component/timeline#timeline-item-attributes",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/timeline#timeline-item-attributes",
           "props": [
             {
               "name": "type",
@@ -3802,7 +3802,7 @@
         {
           "name": "ElTooltip",
           "description": "Display prompt information for mouse hover.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/tooltip",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/tooltip",
           "props": [
             {
               "name": "visibleArrow",
@@ -3883,7 +3883,7 @@
         },
         {
           "name": "ElTransfer",
-          "doc-url": "https://element.eleme.io/#/en-US/component/transfer",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/transfer",
           "props": [
             {
               "name": "data",
@@ -3960,7 +3960,7 @@
         {
           "name": "ElTree",
           "description": "Display a set of data with hierarchies.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/tree",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/tree",
           "props": [
             {
               "name": "data",
@@ -4064,7 +4064,7 @@
         {
           "name": "ElUpload",
           "description": "Upload files by clicking or drag-and-drop",
-          "doc-url": "https://element.eleme.io/#/en-US/component/upload",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/upload",
           "props": [
             {
               "name": "data",
@@ -4158,7 +4158,7 @@
         {
           "name": "loading",
           "description": "Displays animation in a container (such as a table) while loading data.\n\nElement provides two ways to invoke Loading: directive and service. For the custom directive `v-loading`, you just need to bind a boolean value to it. By default, the loading mask will append to the element where the directive is used. Adding the `body` modifier makes the mask append to the body element.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/loading",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/loading",
           "attribute-value": {
             "type": "boolean",
             "required": true
@@ -4178,7 +4178,7 @@
         {
           "name": "infinite-scroll",
           "description": "Add `v-infinite-scroll` to the list to automatically execute loading method when scrolling to the bottom.",
-          "doc-url": "https://element.eleme.io/#/en-US/component/infiniteScroll",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/infiniteScroll",
           "attribute-value": {
             "type": "Function",
             "required": true
@@ -4186,7 +4186,7 @@
         },
         {
           "name": "popover",
-          "doc-url": "https://element.eleme.io/#/en-US/component/popover",
+          "doc-url": "https://chengchuu.github.io/mazey-element-ui/#/en-US/component/popover",
           "description": "Use the `v-popover` directive and set it to Popover's ref to trigger element."
         }
       ]

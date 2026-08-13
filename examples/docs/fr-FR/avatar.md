@@ -35,8 +35,8 @@ utilisez les prop `shape` et` size` pour définir la forme et la taille de l'ava
   export default {
     data () {
       return {
-        circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-        squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+        circleUrl: require("examples/assets/images/element-demo.jpeg"),
+        squareUrl: require("examples/assets/images/element-demo.jpeg"),
         sizeList: ["large", "medium", "small"]
       }
     }
@@ -58,7 +58,7 @@ Les images, icônes et les caractères sont supportés.
       <el-avatar icon="el-icon-user-solid"></el-avatar>
     </div>
     <div>
-      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+      <el-avatar :src="require('examples/assets/images/element-demo.jpeg')"></el-avatar>
     </div>
     <div>
       <el-avatar> user </el-avatar>
@@ -76,8 +76,8 @@ fallback en cas d'erreur de chargement d'image
 ```html
 <template>
   <div class="demo-type">
-    <el-avatar :size="60" src="https://empty" @error="errorHandler">
-      <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+    <el-avatar :size="60" src="/mazey-element-ui/missing-avatar.png" @error="errorHandler">
+      <img src="~examples/assets/images/element-demo.jpeg"/>
       </el-avatar>
   </div>
 </template>
@@ -113,7 +113,7 @@ Défini comment l'image s'adapte à son conteneur, pareil que [object-fit](https
     data() {
       return {
         fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+        url: require('examples/assets/images/element-demo.jpeg')
       }
     }
   }

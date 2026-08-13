@@ -23,7 +23,7 @@ Permet d'uploader des fichiers en cliquant ou en les déplaçant sur le composan
   export default {
     data() {
       return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: [{name: 'food.jpeg', url: require('examples/assets/images/element-demo.jpeg')}, {name: 'food2.jpeg', url: require('examples/assets/images/element-demo.jpeg')}]
       };
     },
     methods: {
@@ -241,7 +241,7 @@ Use `scoped-slot` to change default thumbnail template.
   export default {
     data() {
       return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: [{name: 'food.jpeg', url: require('examples/assets/images/element-demo.jpeg')}, {name: 'food2.jpeg', url: require('examples/assets/images/element-demo.jpeg')}]
       };
     },
     methods: {
@@ -277,10 +277,10 @@ Utilisez `on-change` pour contrôler le comportement de la liste de fichiers.
       return {
         fileList: [{
           name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          url: require('examples/assets/images/element-demo.jpeg')
         }, {
           name: 'food2.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          url: require('examples/assets/images/element-demo.jpeg')
         }]
       };
     },

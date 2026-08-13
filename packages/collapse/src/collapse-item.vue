@@ -45,9 +45,9 @@
   </div>
 </template>
 <script>
-  import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition';
-  import Emitter from 'element-ui/src/mixins/emitter';
-  import { generateId } from 'element-ui/src/utils/util';
+  import ElCollapseTransition from 'mazey-element-ui/src/transitions/collapse-transition';
+  import Emitter from 'mazey-element-ui/src/mixins/emitter';
+  import { generateId } from 'mazey-element-ui/src/utils/util';
 
   export default {
     name: 'ElCollapseItem',

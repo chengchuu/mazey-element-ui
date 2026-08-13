@@ -22,7 +22,7 @@ Carga archivos haciendo clic o arrastrándolos.
   export default {
     data() {
       return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: [{name: 'food.jpeg', url: require('examples/assets/images/element-demo.jpeg')}, {name: 'food2.jpeg', url: require('examples/assets/images/element-demo.jpeg')}]
       };
     },
     methods: {
@@ -237,7 +237,7 @@ Use el `scoped-slot`  para cambiar el template por defecto del thumbnail.
   export default {
     data() {
       return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: [{name: 'food.jpeg', url: require('examples/assets/images/element-demo.jpeg')}, {name: 'food2.jpeg', url: require('examples/assets/images/element-demo.jpeg')}]
       };
     },
     methods: {
@@ -273,10 +273,10 @@ Utilice el _hook_ `on-change` para controlar la funcionalidad de la lista de arc
       return {
         fileList: [{
           name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          url: require('examples/assets/images/element-demo.jpeg')
         }, {
           name: 'food2.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          url: require('examples/assets/images/element-demo.jpeg')
         }]
       };
     },

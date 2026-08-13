@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "loose": true,
         "modules": false,
@@ -10,14 +10,14 @@
         }
       }
     ],
-    "stage-2"
+    "@vue/babel-preset-jsx"
   ],
-  "plugins": ["transform-vue-jsx"],
+  "plugins": [],
   "env": {
     "utils": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "loose": true,
             "modules": "commonjs",
@@ -25,13 +25,12 @@
               "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
             }
           }
-        ],
+        ]
       ],
       "plugins": [
         ["module-resolver", {
-          "root": ["element-ui"],
           "alias": {
-            "element-ui/src": "element-ui/lib"
+            "mazey-element-ui/src": "./src"
           }
         }]
       ]

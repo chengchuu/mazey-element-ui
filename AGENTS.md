@@ -1,28 +1,51 @@
 # Repository Guide
 
-## Scope and Runtime
+## Scope and compatibility
 
-This is the archived Element UI 2.15.14 source tree: a Vue 2.5 component library built with Webpack 4, Babel 6, Gulp 4, and Yarn Classic. Treat `yarn.lock` as authoritative and use Yarn for dependency changes. The preview workflow records Node 10.15.0; the legacy `node-sass` toolchain may not run on current Node releases without a compatible environment.
+`mazey-element-ui` is the maintained Element UI 2.x fork. It preserves the Vue 2 public contract, including `El*` component names, `el-*` CSS classes, `$ELEMENT`, the browser global `ELEMENT`, and the existing `ElementUI` TypeScript names. Source changes must remain compatible with Vue `^2.5.17` unless the task explicitly changes that contract.
 
-## Repository Map and Entry Points
+Development requires Node.js 22 and pnpm 11.9.0. The `packageManager` field and `pnpm-lock.yaml` are authoritative. Do not add npm or Yarn lockfiles.
 
-- `packages/<component>/` owns each public component. Its `index.js` installs or exports the implementation under `src/`; colocate component-specific helpers there.
-- `src/` contains shared locale, mixin, directive, transition, popup, DOM, and date utilities. `src/index.js` is the generated full-library plugin entry.
-- `components.json` maps public component names to package entries and drives entry and stylesheet generation.
-- `types/` contains the public TypeScript declarations; keep these aligned with runtime APIs.
-- `packages/theme-chalk/src/` is the maintained SCSS theme source. Its `lib/` output and root `lib/` are generated and ignored.
-- `examples/` contains the documentation application, Markdown component docs, localized pages, play area, and shared demo UI.
-- `test/unit/specs/` contains Karma/Mocha browser tests; `test/ssr/` covers server-side loading.
-- `build/` owns generators, Markdown loading, Webpack targets, release scripts, and shared aliases.
+## Repository map
 
-## Startup and Data Flow
+- `packages/<component>/` owns public components and Theme Chalk source. Root `lib/` and `packages/theme-chalk/lib/` are generated.
+- `src/` contains shared utilities, locale support, directives, mixins, transitions, and the generated full-library entry at `src/index.js`.
+- `types/` defines the public TypeScript contract; keep it aligned with runtime APIs.
+- `components.json` drives component entry and stylesheet generation.
+- `examples/` contains the Vue 2 documentation SPA, localized Markdown, templates, and local assets. `examples/element-ui/` is the generated GitHub Pages artifact.
+- `test/unit/specs/` contains Karma/Mocha browser tests. `test/ssr/` covers server-side loading.
+- `build/` contains generators, Webpack 5 configurations, Markdown loaders, package smoke tests, and Pages finalization.
 
-`npm run dev` installs dependencies, runs `build:file`, starts `webpack-dev-server` on port 8085, and watches page templates. `examples/entry.js` installs Element and Vue Router, builds routes from `examples/nav.config.js`, lazy-loads localized Markdown/pages, and mounts `examples/app.vue` at `#app`. For focused work, edit `examples/play/index.vue` and run `npm run dev:play`.
+## Commands and build ownership
 
-Consumer data enters components through Vue props, `v-model`, provide/inject, or plugin options. Components derive local state, coordinate through emitted events or shared mixins/utilities, and render DOM. Services such as Message create Vue instances imperatively and attach them to `document.body`; popup utilities coordinate stacking. Theme SCSS supplies the matching `el-*` classes.
+- `pnpm dev` regenerates source-derived files and starts the documentation server.
+- `pnpm run build:file` regenerates `src/index.js` and localized page shells.
+- `pnpm run dist` creates the npm artifacts with Webpack, Babel, and Dart Sass.
+- `pnpm run deploy:build` creates the subpath-safe Pages artifact in `examples/element-ui/` and adds crawler files plus `.nojekyll`.
+- `pnpm test` runs the browser suite; `pnpm run test:package` verifies packed npm and pnpm consumers, CommonJS, deep imports, CSS, declarations, and the browser global.
+- `pnpm run release:check` runs the complete non-publishing release validation.
 
-## Configuration and Build Pipeline
+Do not hand-edit `src/index.js`, generated localized pages, `lib/`, `packages/theme-chalk/lib/`, or `examples/element-ui/`. Change their source, template, or generator and rebuild. Do not restore the retired online theme editor, private service probes, analytics, or CDN-loaded documentation runtime dependencies.
 
-`package.json` defines the workflow; `.babelrc`, `.eslintrc`, `build/config.js`, and `build/webpack.*.js` control transpilation, linting, aliases, externals, and outputs. `npm run build:file` regenerates `src/index.js`, localized page shells, and version data. `npm run dist` cleans outputs, regenerates files, lints, builds UMD/CommonJS/per-component bundles, transpiles shared utilities, emits locale UMD files, and compiles/minifies Theme Chalk.
+## Documentation and Pages
 
-Do not hand-edit generated entries or `lib/`. Update `components.json`, templates, package source, declarations, docs, and tests together. Validate focused changes with the relevant unit spec, then run `npm run lint`, `npm test`, and `npm run dist` when the compatible legacy runtime is available. Finish with `git diff --check` and inspect `git status --short`.
+The public site is hosted at `https://chengchuu.github.io/mazey-element-ui/`; browser-loaded project assets must remain below `/mazey-element-ui/`. Vue, Vue Router, Highlight.js, documentation scripts, styles, fonts, and images are bundled or copied locally. Preserve upstream issue and release links when they are historical citations, while maintained package, repository, issue, contribution, and installation links must use `mazey-element-ui`.
+
+The validation workflow runs on `main` and `release/v2`. GitHub Pages deployment is restricted to pushes to `release/v2`; local work must not publish, deploy, tag, stage, or commit unless explicitly requested.
+
+## Change and validation guidance
+
+Keep changes narrow and preserve the Vue 2 API. Update implementation, declarations, tests, documentation, and examples together when public behavior changes. Start with focused checks, then run the applicable full commands:
+
+```bash
+corepack pnpm install --frozen-lockfile
+pnpm run lint
+pnpm test
+pnpm run dist
+pnpm run deploy:build
+pnpm run test:package
+npm pack --dry-run
+git diff --check
+```
+
+Review `git status --short` and generated artifacts before handoff. Dart Sass may report upstream `@import` and legacy-function deprecations; do not silence them by changing package CSS behavior incidentally.

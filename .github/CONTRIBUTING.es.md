@@ -1,8 +1,8 @@
-﻿# Guía para Contribuidores a `Element UI`
+﻿# Guía para Contribuidores a `Mazey Element UI`
 
-¡Hola! Gracias por elegir [Element UI](http://element.eleme.io/#/en-US).
+¡Hola! Gracias por elegir [Mazey Element UI](http://element.eleme.io/#/en-US).
 
-`Element UI` es un archivo de componentes para desarrolladores y para gerentes de productos ‘web’ basado en [Vue 2.0](https://vuejs.org/)
+`Mazey Element UI` es un archivo de componentes para desarrolladores y para gerentes de productos ‘web’ basado en [Vue 2.0](https://vuejs.org/)
 
 Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Element`. Antes de someter sus contribuciones, por favor tome un momentito para leer estas simples guías para contribuidores.
 
@@ -24,13 +24,11 @@ Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Eleme
 
 - **DE NINGUNA MANERA** incluya archivos dentro del directorio `lib`.
 
-- Asegúrese de que el comando `npm run dist` produzca los archivos correctos.
-
-- Para asegurar compatibilidad y reducir tamaño de los archivos, nuestra configuración de `babel` solo importa `preset-2015`, así que IPAs como  Array.prototype.find` y `Object.assign` en `ES2015` no son recomendados. Puede importar “polyfills” terceros, sí es necesario.
+- Asegúrese de que el comando `pnpm run dist` produzca los archivos correctos.
 
 - “Rebase” antes de crear un “pull request (PR)” para mantener la historia de “commits” limpia.
 
-- Asegúrese que sus PRs se refrieran a la rama `dev`  y no a la rama  `master`.
+- Cree los PRs contra la rama `main`.
 
 - Si su PR arregla un error técnico, por favor, haga referencia al error especifico.
 
@@ -38,22 +36,23 @@ Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Eleme
 
 
 ## Requerimientos Técnicos
-`Node.js 4+`, `yarn` y `npm 3+` son requisitos. Nota: Usamos yarn para bloquear versiones de dependencias, por lo que debería instalar dependencias usando `yarn` en lugar de `npm install`.
+Se requieren Node.js 22 y pnpm 11.9.0. El archivo `pnpm-lock.yaml` confirmado es la fuente autorizada para las dependencias.
 .
 ```shell
-git clone git@github.com:ElemeFE/element.git
-npm run dev
+git clone https://github.com/chengchuu/mazey-element-ui.git
+corepack pnpm install --frozen-lockfile
+pnpm run dev
 
 # abra http://localhost:8085
 ```
 
-> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `npm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
+> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `pnpm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
 
 Para armar:
 
 ```
 shell
-npm run dist
+pnpm run dist
 ```
 
 ## Guía Para Desarrollo de Componentes
@@ -64,4 +63,3 @@ npm run dist
 
 ## Estilo de Desarrollo
 Por favor acate a este estilo [ESLint](https://github.com/ElemeFE/eslint-config-elemefe) configuración de [ElemeFE](https://github.com/elemefe).
-

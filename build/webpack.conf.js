@@ -1,5 +1,4 @@
 const path = require('path');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -31,8 +30,9 @@ module.exports = {
   optimization: {
     minimizer: [
       new TerserPlugin({
+        extractComments: false,
         terserOptions: {
-          output: {
+          format: {
             comments: false
           }
         }
@@ -65,7 +65,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new ProgressBarPlugin(),
     new VueLoaderPlugin()
   ]
 };
