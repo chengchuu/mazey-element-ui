@@ -1,5 +1,7 @@
 node_modules
 package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 yarn.lock
 .DS_Store
 npm-debug.log
@@ -15,6 +17,7 @@ lib
 .idea
 .vscode
 examples/element-ui
+examples/icon.json
 examples/pages/en-US
 examples/pages/zh-CN
 examples/pages/es

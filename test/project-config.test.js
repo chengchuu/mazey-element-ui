@@ -8,6 +8,7 @@ const test = require('node:test');
 const rootDir = path.resolve(__dirname, '..');
 const packageJson = require('../package.json');
 const workflow = fs.readFileSync(path.join(rootDir, '.github/workflows/validate-and-pages.yml'), 'utf8');
+const makefile = fs.readFileSync(path.join(rootDir, 'Makefile'), 'utf8');
 
 function read(relativePath) {
   return fs.readFileSync(path.join(rootDir, relativePath), 'utf8');
@@ -17,10 +18,25 @@ test('repository does not provision or pin the local package manager', () => {
   assert.strictEqual(packageJson.packageManager, undefined);
   assert.strictEqual(packageJson.scripts.bootstrap, undefined);
   assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), false);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), false);
 });
 
 test('clean removes every generated package and test output boundary', () => {
-  for (const generatedPath of ['lib', 'dist', 'packages/*/lib', 'test/**/coverage']) {
+  const generatedPaths = [
+    'lib',
+    'dist',
+    'packages/*/lib',
+    'test/**/coverage',
+    'examples/icon.json',
+    'examples/element-ui',
+    'examples/pages/en-US',
+    'examples/pages/zh-CN',
+    'examples/pages/es',
+    'examples/pages/fr-FR'
+  ];
+
+  for (const generatedPath of generatedPaths) {
     assert.match(packageJson.scripts.clean, new RegExp(`(?:^|\\s)${generatedPath.replace(/[*/]/g, '\\$&')}(?:$|\\s)`));
   }
 });
@@ -30,6 +46,13 @@ test('composite scripts use npm for nested package scripts', () => {
   for (const name of compositeScripts) {
     assert.match(packageJson.scripts[name], /\bnpm\s+(?:run|test)\b/);
     assert.doesNotMatch(packageJson.scripts[name], /\bpnpm\b|run-package-scripts\.js/);
+  }
+});
+
+test('Make wrappers invoke only defined npm scripts', () => {
+  const invokedScripts = Array.from(makefile.matchAll(/\bnpm run ([\w:-]+)/g), match => match[1]);
+  for (const script of invokedScripts) {
+    assert.ok(packageJson.scripts[script], `Makefile invokes missing npm script: ${script}`);
   }
 });
 

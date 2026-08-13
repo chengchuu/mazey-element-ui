@@ -1,4 +1,4 @@
-.PHONY: dist test
+.PHONY: build-theme install install-cn dev play new new-lang dist test help
 default: help
 
 # build all theme
@@ -26,12 +26,6 @@ new-lang:
 dist: install
 	npm run dist
 
-deploy:
-	@npm run deploy
-
-pub:
-	npm run pub
-
 test:
 	npm run test:watch
 
@@ -41,6 +35,4 @@ help:
 	@echo "   \033[35mmake new <component-name> [中文名]\033[0m\t---  创建新组件 package. 例如 'make new button 按钮'"
 	@echo "   \033[35mmake dev\033[0m\t\033[0m\t\033[0m\t\033[0m\t---  开发模式"
 	@echo "   \033[35mmake dist\033[0m\t\033[0m\t\033[0m\t\033[0m\t---  编译项目，生成目标文件"
-	@echo "   \033[35mmake deploy\033[0m\t\033[0m\t\033[0m\t\033[0m\t---  部署 demo"
-	@echo "   \033[35mmake pub\033[0m\t\033[0m\t\033[0m\t\033[0m\t---  发布到 npm 上"
 	@echo "   \033[35mmake new-lang <lang>\033[0m\t\033[0m\t\033[0m\t---  为网站添加新语言. 例如 'make new-lang fr'"
