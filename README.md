@@ -6,7 +6,7 @@
 
 Mazey Element UI is a maintained fork of Element UI for Vue 2 desktop applications. Version 2.15.15 retains the upstream Vue 2 public API, including `El*` exports, `el-*` component names, `$ELEMENT`, the `ELEMENT` browser global, and existing `ElementUI` TypeScript symbols.
 
-Element UI 2.15.14 is the upstream source for this fork. The original project history, license, changelogs, issue references, and contributor attribution remain in this repository.
+Element UI 2.15.14 is the upstream source for this fork. The original project history, license, issue references, and contributor attribution remain in this repository.
 
 ## Documentation
 
@@ -77,7 +77,7 @@ Read the contributing guide in [English](.github/CONTRIBUTING.en-US.md), [简体
 
 ## Upstream attribution
 
-Element UI was originally developed by Ele.me and its contributors. The upstream repository is archived at [ElemeFE/element](https://github.com/ElemeFE/element). This fork preserves the upstream `LICENSE`, Git history, changelogs, historical issue and pull-request references, and documentation credits.
+Element UI was originally developed by Ele.me and its contributors. The upstream repository is archived at [ElemeFE/element](https://github.com/ElemeFE/element). This fork preserves the upstream `LICENSE`, Git history, historical issue and pull-request references, and documentation credits.
 
 English documentation was contributed by SwiftGG Translation Team members raychenfj, kevin, 曾小涛, 湾仔王二, BlooDLine, 陈铭嘉, 千叶知风, 梁杰, Changing, and mmoaay. Spanish documentation contributors include adavie1, carmencitaqiu, coderdiaz, fedegar33, Gonzalo2310, lesterbx, ProgramerGuy, SantiagoGdaR, sigfriedCub1990, and thechosenjuan. French documentation contributors include smalesys and blombard.
 

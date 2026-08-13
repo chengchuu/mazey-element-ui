@@ -1,10 +1,6 @@
 {
   "zh-CN": [
     {
-      "name": "更新日志",
-      "path": "/changelog"
-    },
-    {
       "name": "Element React",
       "href": "https://elemefe.github.io/element-react/"
     },
@@ -318,10 +314,6 @@
     }
   ],
   "en-US": [
-    {
-      "name": "Changelog",
-      "path": "/changelog"
-    },
     {
       "name": "Element React",
       "href": "https://elemefe.github.io/element-react/"
@@ -637,10 +629,6 @@
   ],
   "es": [
     {
-      "name": "Changelog",
-      "path": "/changelog"
-    },
-    {
       "name": "Element React",
       "href": "https://elemefe.github.io/element-react/"
     },
@@ -954,10 +942,6 @@
     }
   ],
   "fr-FR": [
-    {
-      "name": "Changelog",
-      "path": "/changelog"
-    },
     {
       "name": "Element pour React",
       "href": "https://elemefe.github.io/element-react/"

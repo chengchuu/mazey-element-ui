@@ -56,6 +56,14 @@ test('Make wrappers invoke only defined npm scripts', () => {
   }
 });
 
+test('documentation does not generate or link changelog pages', () => {
+  const changelogFiles = fs.readdirSync(rootDir).filter(file => /^CHANGELOG\..+\.md$/.test(file));
+  assert.deepStrictEqual(changelogFiles, []);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'examples/pages/template/changelog.tpl')), false);
+  assert.doesNotMatch(read('examples/nav.config.json'), /\/changelog|Changelog|更新日志|Lista de cambios/);
+  assert.doesNotMatch(read('examples/route.config.js'), /changelog/i);
+});
+
 test('maintained development and installation docs use npm commands', () => {
   const documentationFiles = [
     'AGENTS.md',

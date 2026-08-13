@@ -83,9 +83,7 @@ const registerRoute = (navConfig) => {
     });
   });
   function addRoute(page, lang, index) {
-    const component = page.path === '/changelog'
-      ? load(lang, 'changelog')
-      : loadDocs(lang, page.path);
+    const component = loadDocs(lang, page.path);
     let child = {
       path: page.path.slice(1),
       meta: {

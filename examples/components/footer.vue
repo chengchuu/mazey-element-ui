@@ -4,7 +4,6 @@
       <div class="footer-main">
         <h4>{{ langConfig.links }}</h4>
         <a href="https://github.com/chengchuu/mazey-element-ui" class="footer-main-link" target="_blank">{{ langConfig.repo }}</a>
-        <a href="https://github.com/chengchuu/mazey-element-ui/releases" class="footer-main-link" target="_blank">{{ langConfig.changelog }}</a>
         <a href="https://github.com/chengchuu/mazey-element-ui/blob/main/FAQ.md" class="footer-main-link" target="_blank">{{ langConfig.faq }}</a>
         <a href="https://github.com/ElementUI/element-starter" class="footer-main-link" target="_blank">{{ langConfig.starter }}</a>
         <a :href="'/mazey-element-ui/#/' + lang + '/component/custom-theme'" class="footer-main-link">{{ langConfig.theme }}</a>
