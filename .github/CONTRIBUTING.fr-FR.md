@@ -22,7 +22,7 @@ Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre 
 
 - **NE PAS** inclure de fichiers dans le répertoire `lib`.
 
-- Assurez-vous que l'exécution de `pnpm run dist` génère les bons fichiers.
+- Assurez-vous que l'exécution de `npm run dist` génère les bons fichiers.
 
 - Faites un rebase avant la création d'une PR pour garder l'historique clair.
 
@@ -33,21 +33,21 @@ Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre 
 - La fusion d'un PR nécessite deux responsables: l'un approuve les modifications après révision, puis l'autre les révise et les fusionne.
 
 ## Pré-requis
-Node.js 22 et pnpm 11.9.0 sont requis. Le fichier `pnpm-lock.yaml` validé est la source de référence pour les dépendances.
+Node.js 22 et npm sont requis.
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-corepack pnpm install --frozen-lockfile
-pnpm run dev
+npm install
+npm run dev
 
 # open http://localhost:8085/mazey-element-ui/
 ```
 
-> **Remarque** : modifiez le fichier `examples/play/index.vue`, utilisez le composant auquel vous contribuez, puis lancez `pnpm run dev:play`, allez sur [http://localhost:8085](http://localhost:8085), regardez le résultat rapidement et facilement.
+> **Remarque** : modifiez le fichier `examples/play/index.vue`, utilisez le composant auquel vous contribuez, puis lancez `npm run dev:play`, allez sur [http://localhost:8085](http://localhost:8085), regardez le résultat rapidement et facilement.
 
 Pour le build:
 
 ```shell
-pnpm run dist
+npm run dist
 ```
 
 ## Concernant le développement de composants

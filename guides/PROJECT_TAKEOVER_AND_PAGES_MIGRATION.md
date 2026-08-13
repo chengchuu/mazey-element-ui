@@ -12,28 +12,24 @@ The migration must preserve the Vue 2 runtime API. Keep `El*` component names, `
 
 This work prepares the release but does not publish it to npm.
 
-## Use pnpm and npm
+## Use npm
 
-Use pnpm as the authoritative dependency manager:
+Use npm for local development, GitHub Actions, registry operations, and package-artifact checks:
 
-- Pin `pnpm@11.9.0` in the root `package.json`.
-- Commit `pnpm-lock.yaml`.
 - Remove `yarn.lock` and all Yarn-specific commands.
-- Do not create or commit `package-lock.json`.
-- Use `pnpm install --frozen-lockfile` in continuous integration (CI).
-- Use pnpm for dependency changes, scripts, builds, tests, and local development.
-
-Use npm only for registry and package-artifact operations:
-
+- Preserve the established lockfile policy unless dependency maintenance explicitly changes it.
+- Do not add a `packageManager` field, Corepack bootstrap, or a repository-owned package-manager installer.
+- Use npm for dependency changes, scripts, builds, tests, and local development commands.
+- Install dependencies with `npm install` in CI without dependency caching.
+- Run package scripts with `npm run <script>` in CI.
 - Inspect published package metadata with `npm view`.
 - Inspect the release artifact with `npm pack --dry-run`.
 - Install the packed tarball in a clean npm consumer.
 - Use npm for a future publish only after separate authorization.
 
-Document both consumer installation commands:
+Document the npm consumer installation command:
 
 ```bash
-pnpm add mazey-element-ui
 npm install mazey-element-ui
 ```
 
@@ -63,7 +59,7 @@ Keep Vue 2.5 and the existing library output filenames and exports. Upgrade only
 6. Preserve UMD, CommonJS, per-component, locale, declaration, and Theme Chalk outputs.
 7. Replace upstream-targeting release commands with a non-publishing `release:check` pipeline.
 
-Regenerate the pnpm lockfile only after the dependency set is final. Review peer-dependency warnings instead of bypassing them globally.
+Review peer-dependency warnings instead of bypassing them globally.
 
 ## Prepare the Pages site
 
@@ -89,7 +85,7 @@ Remove the obsolete Travis, upstream `gh-pages`, FaaS, and Surge deployment path
 - `main`: build and validation only
 - `release/v2`: build, validation, and production Pages deployment
 
-Validate pushes and pull requests for both branches on Node.js 22. Install pnpm with `pnpm/action-setup@v6`, read its version from `package.json`, and enable pnpm caching through `actions/setup-node@v6`.
+Validate pushes and pull requests for both branches on Node.js 22. In GitHub Actions, use `npm install` and `npm run <script>` without package-manager setup or dependency caching.
 
 Deploy the generated artifact through `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`, and `actions/deploy-pages@v5`. Grant only `contents: read`, `pages: write`, and `id-token: write`. Use the `github-pages` environment and restrict production deployment to `release/v2`.
 
@@ -100,18 +96,18 @@ The existing `origin/release` branch is not a deployment source. Create and push
 Run the following repository checks on Node.js 22:
 
 ```bash
-pnpm install --frozen-lockfile
-pnpm run lint
-pnpm test
-pnpm run dist
-pnpm run deploy:build
-pnpm run release:check
+npm install
+npm run lint
+npm test
+npm run dist
+npm run deploy:build
+npm run release:check
 npm pack --dry-run
 git diff --check
 git status --short
 ```
 
-Inspect the packed file list, then install the tarball into separate clean pnpm and npm consumer projects. Verify full-package imports, per-component imports, Theme Chalk CSS, declarations, the browser global, and server-side loading.
+Inspect the packed file list, then install the tarball into a clean npm consumer project. Verify full-package imports, per-component imports, Theme Chalk CSS, declarations, the browser global, and server-side loading.
 
 Serve the generated site beneath `/mazey-element-ui/` and verify:
 

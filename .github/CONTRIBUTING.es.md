@@ -24,7 +24,7 @@ Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Eleme
 
 - **DE NINGUNA MANERA** incluya archivos dentro del directorio `lib`.
 
-- Asegúrese de que el comando `pnpm run dist` produzca los archivos correctos.
+- Asegúrese de que el comando `npm run dist` produzca los archivos correctos.
 
 - “Rebase” antes de crear un “pull request (PR)” para mantener la historia de “commits” limpia.
 
@@ -36,23 +36,23 @@ Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Eleme
 
 
 ## Requerimientos Técnicos
-Se requieren Node.js 22 y pnpm 11.9.0. El archivo `pnpm-lock.yaml` confirmado es la fuente autorizada para las dependencias.
+Se requieren Node.js 22 y npm.
 .
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-corepack pnpm install --frozen-lockfile
-pnpm run dev
+npm install
+npm run dev
 
 # abra http://localhost:8085
 ```
 
-> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `pnpm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
+> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `npm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
 
 Para armar:
 
 ```
 shell
-pnpm run dist
+npm run dist
 ```
 
 ## Guía Para Desarrollo de Componentes

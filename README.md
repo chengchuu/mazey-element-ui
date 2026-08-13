@@ -27,13 +27,7 @@ For Vue 3 projects, see [Element Plus](https://github.com/element-plus/element-p
 
 ## Install
 
-Install the package with pnpm:
-
-```bash
-pnpm add mazey-element-ui
-```
-
-Or install it with npm:
+Install the package with npm:
 
 ```bash
 npm install mazey-element-ui
@@ -67,14 +61,14 @@ See the [quick start](https://chengchuu.github.io/mazey-element-ui/#/en-US/compo
 
 ## Development
 
-Development requires Node.js 22 and pnpm 11.9.0.
+Development requires Node.js 22 and npm.
 
 ```bash
-corepack pnpm install --frozen-lockfile
-corepack pnpm run lint
-corepack pnpm test
-corepack pnpm run dist
-corepack pnpm run deploy:build
+npm install
+npm run lint
+npm test
+npm run dist
+npm run deploy:build
 ```
 
 Generated package files in `lib/`, generated theme files, and the Pages artifact in `examples/element-ui/` must be regenerated through their owning scripts.

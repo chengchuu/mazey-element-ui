@@ -34,8 +34,9 @@ function run(command, args, cwd, options = {}) {
 function writeConsumer(directory, archivePath) {
   fs.mkdirSync(directory, { recursive: true });
   fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({
+    name: 'mazey-element-ui-package-smoke-test',
+    version: '1.0.0',
     private: true,
-    packageManager: packageJson.packageManager,
     dependencies: {
       [packageJson.name]: `file:${archivePath}`,
       vue: '2.5.21'
@@ -80,12 +81,6 @@ try {
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], npmConsumer);
   verifyRuntime(npmConsumer);
 
-  const pnpmConsumer = path.join(temporaryDir, 'pnpm-consumer');
-  writeConsumer(pnpmConsumer, archivePath);
-  console.log('Installing the pnpm consumer...');
-  run('corepack', ['pnpm', 'install', '--ignore-scripts'], pnpmConsumer);
-  verifyRuntime(pnpmConsumer);
-
   const typeSource = [
     "import Vue from 'vue';",
     `import ElementUI, { Button, Message } from '${packageJson.name}';`,
@@ -93,8 +88,8 @@ try {
     'Vue.component(Button.name, Button);',
     "Message.success('ready');"
   ].join('\n');
-  fs.writeFileSync(path.join(pnpmConsumer, 'index.ts'), typeSource);
-  fs.writeFileSync(path.join(pnpmConsumer, 'tsconfig.json'), JSON.stringify({
+  fs.writeFileSync(path.join(npmConsumer, 'index.ts'), typeSource);
+  fs.writeFileSync(path.join(npmConsumer, 'tsconfig.json'), JSON.stringify({
     compilerOptions: {
       module: 'commonjs',
       noEmit: true,
@@ -103,7 +98,7 @@ try {
     },
     files: ['index.ts']
   }, null, 2));
-  run(path.join(rootDir, 'node_modules/.bin/tsc'), ['--project', 'tsconfig.json'], pnpmConsumer);
+  run(path.join(rootDir, 'node_modules/.bin/tsc'), ['--project', 'tsconfig.json'], npmConsumer);
 
   const browserBundle = fs.readFileSync(path.join(rootDir, 'lib/index.js'), 'utf8');
   const vm = require('vm');
@@ -128,7 +123,7 @@ try {
   vm.runInNewContext(browserBundle, browserContext);
   assert.strictEqual(browserContext.ELEMENT.Button.name, 'ElButton');
 
-  console.log('npm, pnpm, CommonJS, deep import, CSS, types, and browser-global package checks passed.');
+  console.log('npm, CommonJS, deep import, CSS, types, and browser-global package checks passed.');
 } finally {
   fs.rmSync(temporaryDir, { recursive: true, force: true });
 }

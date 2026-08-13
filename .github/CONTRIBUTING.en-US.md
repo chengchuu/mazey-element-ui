@@ -22,7 +22,7 @@ We are excited that you are interested in contributing to Element. Before submit
 
 - **DO NOT** include files inside `lib` directory.
 
-- Make sure that running `pnpm run dist` outputs the correct files.
+- Make sure that running `npm run dist` outputs the correct files.
 
 - Rebase before creating a PR to keep commit history clear.
 
@@ -33,21 +33,21 @@ We are excited that you are interested in contributing to Element. Before submit
 - Merging a PR takes two maintainers: one approves the changes after reviewing, and then the other reviews and merges.
 
 ## Prerequisites
-Node.js 22 and pnpm 11.9.0 are required. The committed `pnpm-lock.yaml` is authoritative.
+Node.js 22 and npm are required.
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-corepack pnpm install --frozen-lockfile
-pnpm run dev
+npm install
+npm run dev
 
 # open http://localhost:8085/mazey-element-ui/
 ```
 
-> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `pnpm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
+> **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `npm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.
 
 To build:
 
 ```shell
-pnpm run dist
+npm run dist
 ```
 
 ## Component Developing Guidelines

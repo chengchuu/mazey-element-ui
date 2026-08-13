@@ -20,7 +20,7 @@ Mazey Element UI 的成长离不开大家的支持，如果你愿意为 Mazey El
 
 - **不要提交** `lib` 里面打包的文件。
 
-- 执行 `pnpm run dist` 后可以正确打包文件。
+- 执行 `npm run dist` 后可以正确打包文件。
 
 - 提交 PR 前请 rebase，确保 commit 记录的整洁。
 
@@ -31,21 +31,21 @@ Mazey Element UI 的成长离不开大家的支持，如果你愿意为 Mazey El
 - 合并代码需要两名维护人员参与：一人进行 review 后 approve，另一人再次 review，通过后即可合并。
 
 ## 开发环境搭建
-开发环境需要 Node.js 22 和 pnpm 11.9.0。仓库以 `pnpm-lock.yaml` 为唯一依赖锁文件。
+开发环境需要 Node.js 22 和 npm。
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-corepack pnpm install --frozen-lockfile
-pnpm run dev
+npm install
+npm run dev
 
 # open http://localhost:8085/mazey-element-ui/
 ```
 
-> **提示**：可以运行 `pnpm run dev:play`，修改 `examples/play/index.vue` 文件，调用你修改后的组件，仍然访问 [http://localhost:8085](http://localhost:8085)，查看修改效果，更快更方便。
+> **提示**：可以运行 `npm run dev:play`，修改 `examples/play/index.vue` 文件，调用你修改后的组件，仍然访问 [http://localhost:8085](http://localhost:8085)，查看修改效果，更快更方便。
 
 打包代码：
 
 ```shell
-pnpm run dist
+npm run dist
 ```
 
 ## 组件开发规范

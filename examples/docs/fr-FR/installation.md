@@ -1,11 +1,5 @@
 ## Installation
 
-### pnpm
-
-```shell
-pnpm add mazey-element-ui
-```
-
 ### npm
 
 Installer Element via npm est recommandé, il fonctionne parfaitement avec [webpack](https://webpack.js.org/).
