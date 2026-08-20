@@ -113,10 +113,6 @@
       position: relative;
       cursor: pointer;
 
-      &.nav-algolia-search {
-        cursor: default;
-      }
-
       &.lang-item,
       &:last-child {
         cursor: default;
@@ -235,9 +231,6 @@
           padding: 0 5px;
         }
       }
-      .nav-theme-switch, .nav-algolia-search {
-        display: none;
-      }
     }
   }
 
@@ -274,9 +267,6 @@
       .nav-gap {
         padding: 0 8px;
       }
-      .nav-versions {
-        display: none;
-      }
     }
   }
 </style>
@@ -284,13 +274,13 @@
   <div class="headerWrapper">
     <div id="v3-banner" v-if="isHome">
       <template v-if="lang === 'zh-CN'">
-        您正在浏览基于 Vue 2.x 的文档;
+        您正在浏览 Mazey Element UI 的 Vue 2.x 文档；
         <a href="https://element-plus.org/#/zh-CN">点击查看 Vue 3.x 版本。</a>
         饿了么开源了自研多端框架 MorJS，
         <a href="https://github.com/eleme/morjs">欢迎点击查看或试用 👏🏻</a>
       </template>
       <template v-else>
-        You’re browsing the documentation of Element UI for Vue 2.x version.
+        You’re browsing the Mazey Element UI documentation for Vue 2.x.
         <a href="https://element-plus.org">Click here</a> for Vue 3.x version
       </template>
     </div>
@@ -301,11 +291,11 @@
           <slot>
             <img
               src="../assets/images/element-logo.svg"
-              alt="element-logo"
+              alt="Mazey Element UI"
               class="nav-logo">
             <img
               src="../assets/images/element-logo-small.svg"
-              alt="element-logo"
+              alt="Mazey Element UI"
               class="nav-logo-small">
           </slot>
 
@@ -313,9 +303,6 @@
 
         <!-- nav -->
         <ul class="nav">
-          <li class="nav-item nav-algolia-search" v-show="isComponentPage">
-            <algolia-search></algolia-search>
-          </li>
           <li class="nav-item">
             <router-link
               active-class="active"
@@ -333,7 +320,7 @@
           >
             <router-link
               active-class="active"
-              :to="`/${ lang }/theme`">{{ langConfig.theme }}
+              :to="`/${ lang }/component/custom-theme`">{{ langConfig.theme }}
             </router-link>
           </li>
           <li class="nav-item">
@@ -342,35 +329,6 @@
               :to="`/${ lang }/resource`"
               exact>{{ langConfig.resource }}
             </router-link>
-          </li>
-
-          <!-- gap -->
-          <li class="nav-item" v-show="isComponentPage">
-            <div class="nav-gap"></div>
-          </li>
-
-          <!-- 版本选择器 -->
-          <li class="nav-item nav-versions" v-show="isComponentPage">
-            <el-dropdown
-              trigger="click"
-              class="nav-dropdown"
-              :class="{ 'is-active': verDropdownVisible }">
-              <span>
-                {{ version }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu
-                slot="dropdown"
-                class="nav-dropdown-list"
-                @input="handleVerDropdownToggle">
-                <el-dropdown-item
-                  v-for="item in Object.keys(versions)"
-                  :key="item"
-                  @click.native="switchVersion(item)">
-                  {{ item }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
           </li>
 
           <!-- 语言选择器 -->
@@ -402,23 +360,12 @@
   </div>
 </template>
 <script>
-  import ThemePicker from './theme-picker.vue';
-  import AlgoliaSearch from './search.vue';
   import compoLang from '../i18n/component.json';
-  import Element from 'main/index.js';
-  import themeLoader from './theme/loader';
-  import bus from '../bus';
-  import { ACTION_USER_CONFIG_UPDATE } from './theme/constant.js';
-
-  const { version } = Element;
 
   export default {
     data() {
       return {
         active: '',
-        versions: [],
-        version,
-        verDropdownVisible: true,
         langDropdownVisible: true,
         langs: {
           'zh-CN': '中文',
@@ -427,13 +374,6 @@
           'fr-FR': 'Français'
         }
       };
-    },
-
-    mixins: [themeLoader],
-
-    components: {
-      ThemePicker,
-      AlgoliaSearch
     },
 
     computed: {
@@ -453,63 +393,16 @@
         return /^home/.test(this.$route.name);
       }
     },
-    mounted() {
-      const testInnerImg = new Image();
-      testInnerImg.onload = () => {
-        this.$isEle = true;
-        ga('send', 'event', 'DocView', 'Ali', 'Inner');
-      };
-      testInnerImg.onerror = (err) => {
-        ga('send', 'event', 'DocView', 'Ali', 'Outer');
-        console.error(err);
-      };
-      testInnerImg.src = `https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/VmvVUItLdPNqKlNGuRHi.png?t=${Date.now()}`;
-    },
     methods: {
-      switchVersion(version) {
-        if (version === this.version) return;
-        location.href = `${ location.origin }/${ this.versions[version] }/${ location.hash } `;
-      },
-
       switchLang(targetLang) {
         if (this.lang === targetLang) return;
         localStorage.setItem('ELEMENT_LANGUAGE', targetLang);
         this.$router.push(this.$route.path.replace(this.lang, targetLang));
       },
 
-      handleVerDropdownToggle(visible) {
-        this.verDropdownVisible = visible;
-      },
-
       handleLangDropdownToggle(visible) {
         this.langDropdownVisible = visible;
       }
-    },
-
-    created() {
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = _ => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const versions = JSON.parse(xhr.responseText);
-          this.versions = Object.keys(versions).reduce((prev, next) => {
-            prev[next] = versions[next];
-            return prev;
-          }, {});
-        }
-      };
-      xhr.open('GET', '/versions.json');
-      xhr.send();
-      let primaryLast = '#409EFF';
-      bus.$on(ACTION_USER_CONFIG_UPDATE, (val) => {
-        let primaryColor = val.global['$--color-primary'];
-        if (!primaryColor) primaryColor = '#409EFF';
-        const base64svg = 'data:image/svg+xml;base64,';
-        const imgSet = document.querySelectorAll('h1 img');
-        imgSet.forEach((img) => {
-          img.src = `${base64svg}${window.btoa(window.atob(img.src.replace(base64svg, '')).replace(primaryLast, primaryColor))}`;
-        });
-        primaryLast = primaryColor;
-      });
     }
   };
 </script>

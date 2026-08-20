@@ -1,8 +1,8 @@
-# Guide à destination des contributeurs d'Element UI
+# Guide à destination des contributeurs d'Mazey Element UI
 
-Bonjour! Merci d'avoir choisi Element UI.
+Bonjour! Merci d'avoir choisi Mazey Element UI.
 
-Element UI est une bibliothèque de composants basée sur Vue 2.0 pour les développeurs, les designers et les chefs de produits.
+Mazey Element UI est une bibliothèque de composants basée sur Vue 2.0 pour les développeurs, les designers et les chefs de produits.
 
 Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre votre contribution, veuillez vous assurer de prendre un moment pour lire les indications suivantes.
 
@@ -24,23 +24,22 @@ Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre 
 
 - Assurez-vous que l'exécution de `npm run dist` génère les bons fichiers.
 
-- Pour des raisons de compatibilité et de taille de fichier, notre configuration babel n'importait que `preset-2015`, donc les API comme `Array.prototype.find` et `Object.assign` dans `ES2015` ne sont pas recommandées. Vous pouvez importer des polyfills si nécessaire.
-
 - Faites un rebase avant la création d'une PR pour garder l'historique clair.
 
-- Assurez-vous que les PRs sont créés dans la branche `dev` au lieu de la branche `master`.
+- Créez les PRs vers la branche `main`.
 
 - Si votre PR corrige un bug, veuillez fournir une description du bug en question.
 
 - La fusion d'un PR nécessite deux responsables: l'un approuve les modifications après révision, puis l'autre les révise et les fusionne.
 
 ## Pré-requis
-`Node.js 4+`, `yarn` et `npm 3+` sont requis. Note: nous utilisons yarn pour verrouiller les versions des dépendances, donc vous devriez installer les dépendances en utilisant `yarn` au lieu de `npm install`.
+Node.js 22 et npm sont requis.
 ```shell
-git clone git@github.com:ElemeFE/element.git
+git clone https://github.com/chengchuu/mazey-element-ui.git
+npm install
 npm run dev
 
-# open http://localhost:8085
+# open http://localhost:8085/mazey-element-ui/
 ```
 
 > **Remarque** : modifiez le fichier `examples/play/index.vue`, utilisez le composant auquel vous contribuez, puis lancez `npm run dev:play`, allez sur [http://localhost:8085](http://localhost:8085), regardez le résultat rapidement et facilement.

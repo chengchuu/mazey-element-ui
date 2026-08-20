@@ -83,9 +83,7 @@ const registerRoute = (navConfig) => {
     });
   });
   function addRoute(page, lang, index) {
-    const component = page.path === '/changelog'
-      ? load(lang, 'changelog')
-      : loadDocs(lang, page.path);
+    const component = loadDocs(lang, page.path);
     let child = {
       path: page.path.slice(1),
       meta: {
@@ -123,24 +121,6 @@ const generateMiscRoutes = function(lang) {
     }]
   };
 
-  let themeRoute = {
-    path: `/${ lang }/theme`,
-    component: load(lang, 'theme-nav'),
-    children: [
-      {
-        path: '/', // 主题管理
-        name: 'theme' + lang,
-        meta: { lang },
-        component: load(lang, 'theme')
-      },
-      {
-        path: 'preview', // 主题预览编辑
-        name: 'theme-preview-' + lang,
-        meta: { lang },
-        component: load(lang, 'theme-preview')
-      }]
-  };
-
   let resourceRoute = {
     path: `/${ lang }/resource`, // 资源
     meta: { lang },
@@ -155,7 +135,7 @@ const generateMiscRoutes = function(lang) {
     component: load(lang, 'index')
   };
 
-  return [guideRoute, resourceRoute, themeRoute, indexRoute];
+  return [guideRoute, resourceRoute, indexRoute];
 };
 
 langs.forEach(lang => {

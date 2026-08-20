@@ -1,17 +1,7 @@
 ## Tema personalizado
 Element utiliza la metodología BEM en CSS con la finalidad de que puedas sobrescribir los estilos fácilmente. Pero, si necesita remplazar estilos a gran escala, por ejemplo, cambiar el color del tema de azul a naranja o verde, quizás reemplazarlos uno a uno no sea lo más adecuado, para ello hay 4 maneras de modificar los estilos.
 
-### Theme Roller
-Use [Online Theme Roller](./#/es/theme) para personalizar el diseño de las  variables globales y componentes, y vea el resultado en tiempo real. Puede generar un completo paquete de estilos basado en un nuevo tema que puede bajar directamente (para importar los archivos del nuevo estilo al proyecto por favor vea la sección 'Importar un tema personalizado').
-
-También puede usar [Theme Roller Chrome Extension](https://chrome.google.com/webstore/detail/element-theme-roller/lifkjlojflekabbmlddfccdkphlelmim), para personalizar un tema y ver el resultado en tiempo real en cualquier sitio desarrollado con Element.<img src="https://shadow.elemecdn.com/app/sns-client/element-theme-editor2.e16c6a01-806d-11e9-bc23-21435c54c509.png" style="width: 100%;margin: 30px auto 0;display: block;">
-
-### Cambiando el color del tema
-Si lo que se busca es cambiar el color del tema de Element, se recomienda utilizar el [sitio de visualización de temas](https://elementui.github.io/theme-chalk-preview/#/en-US). Element utiliza un color azul brillante y amigable como tema principal. Al cambiarlo, puede hacer que Element este más conectado visualmente a proyectos específicos.
-
-Este sitio, le permitirá obtener una vista previa del tema con un nuevo color en tiempo real, y, además, obtener un paquete de estilos completo basado en el nuevo color para su descarga (para importar estos nuevos estilos, consulte la sección ‘Importar un tema personalizado’ o ‘Importar un tema de componente bajo demanda' que se encuentran dentro de esta sección).
-
-### Actualizando variables SCSS en tu proyecto
+### Actualizando variables SCSS en tu proyecto### Actualizando variables SCSS en tu proyecto
 `theme-chalk` esta escrito en SCSS. Si su proyecto también utiliza SCSS, puede cambiar las variables de estilos de Element. Para ello, solo necesita crear un nuevo archivo de estilos, por ejemplo, `element-variables.scss`:
 
 ```html
@@ -19,15 +9,15 @@ Este sitio, le permitirá obtener una vista previa del tema con un nuevo color e
 $--color-primary: teal;
 
 /* Ubicación de la fuente, obligatoria */
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
+$--font-path: '~mazey-element-ui/lib/theme-chalk/fonts';
 
-@import "~element-ui/packages/theme-chalk/src/index";
+@import "~mazey-element-ui/packages/theme-chalk/src/index";
 ```
 
 Entonces, en el archivo principal del proyecto, importe este archivo de estilos en lugar de los estilos de Element:
 ```JS
 import Vue from 'vue'
-import Element from 'element-ui'
+import Element from 'mazey-element-ui'
 import './element-variables.scss'
 
 Vue.use(Element)
@@ -102,11 +92,11 @@ et
 
 ### Uso de los temas personalizados
 #### <strong>Importar un tema personalizado</strong>
-Importar su propio tema es igual que importar el tema por defecto, sol que esta vez se deben importar los archivos construidos con "Online Theme Roller" o "CLI tool":
+Importar su propio tema es igual que importar el tema por defecto, solo que esta vez se deben importar los archivos construidos con la herramienta CLI:
 
 ```javascript
 import '../theme/index.css'
-import ElementUI from 'element-ui'
+import ElementUI from 'mazey-element-ui'
 import Vue from 'vue'
 
 Vue.use(ElementUI)
@@ -120,7 +110,7 @@ Si esta utilizando `babel-plugin-component` para importar bajo demanda, solo deb
     [
       "component",
       {
-        "libraryName": "element-ui",
+        "libraryName": "mazey-element-ui",
         "styleLibraryName": "~theme"
       }
     ]

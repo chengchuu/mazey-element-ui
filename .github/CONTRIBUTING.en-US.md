@@ -1,8 +1,8 @@
-# Element UI Contributing Guide
+# Mazey Element UI Contributing Guide
 
-Hi! Thank you for choosing Element UI.
+Hi! Thank you for choosing Mazey Element UI.
 
-Element UI is a Vue 2.0 based component library for developers, designers and product managers.
+Mazey Element UI is a Vue 2.0 based component library for developers, designers and product managers.
 
 We are excited that you are interested in contributing to Element. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
 
@@ -24,23 +24,22 @@ We are excited that you are interested in contributing to Element. Before submit
 
 - Make sure that running `npm run dist` outputs the correct files.
 
-- For the sake of compatibility and file size, our babel configuration only imported `preset-2015`, so APIs like `Array.prototype.find` and `Object.assign` in `ES2015` are not recommended. You can import third party polyfills if necessary.
-
 - Rebase before creating a PR to keep commit history clear.
 
-- Make sure PRs are created to `dev` branch instead of `master` branch.
+- Create pull requests against `main`.
 
 - If your PR fixes a bug, please provide a description about the related bug.
 
 - Merging a PR takes two maintainers: one approves the changes after reviewing, and then the other reviews and merges.
 
 ## Prerequisites
-`Node.js 4+`, `yarn` and `npm 3+` are required. Note: we use yarn to lock dependency versions, so you should install dependencies using `yarn` instead of `npm install`.
+Node.js 22 and npm are required.
 ```shell
-git clone git@github.com:ElemeFE/element.git
+git clone https://github.com/chengchuu/mazey-element-ui.git
+npm install
 npm run dev
 
-# open http://localhost:8085
+# open http://localhost:8085/mazey-element-ui/
 ```
 
 > **Notice**: modify `examples/play/index.vue` file, use the component you contribute, then run `npm run dev:play`, go ahead [http://localhost:8085](http://localhost:8085), get result, more quickly and friendly.

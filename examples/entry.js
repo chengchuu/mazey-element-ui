@@ -3,6 +3,8 @@ import entry from './app';
 import VueRouter from 'vue-router';
 import Element from 'main/index.js';
 import hljs from 'highlight.js';
+import 'es6-promise/auto';
+import 'highlight.js/styles/color-brewer.css';
 import routes from './route.config';
 import demoBlock from './components/demo-block';
 import MainFooter from './components/footer';
@@ -59,8 +61,7 @@ router.afterEach(route => {
       return;
     }
   }
-  document.title = 'Element';
-  ga('send', 'event', 'PageView', route.name);
+  document.title = 'Mazey Element UI';
 });
 
 new Vue({ // eslint-disable-line

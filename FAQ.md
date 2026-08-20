@@ -45,7 +45,7 @@
 <details>
   <summary>你们的文档怎么偷偷更新了？</summary>
   
-  我们只会在 Element 发布新版本时同步更新文档，以体现最新的变化。详细的更新内容可以查看 [changelog](https://github.com/ElemeFE/element/blob/master/CHANGELOG.zh-CN.md)。
+  我们只会在 Element 发布新版本时同步更新文档，以体现最新的变化。
 </details>
 
 <details>
@@ -117,7 +117,7 @@
 <details>
   <summary>When do you update documentations of Element?</summary>
   
-  We update documentations only when a new version of Element is published so that it reflects all the changes introduced in that version. Updated changed can be found in the [changelog](https://github.com/ElemeFE/element/blob/master/CHANGELOG.en-US.md)。
+  We update documentations only when a new version of Element is published so that it reflects all the changes introduced in that version.
 </details>
 
 <details>
@@ -191,7 +191,7 @@
 <details>
   <summary>¿Cuando añaden a la documentación de `Element`?</summary>
   
-  Añadamos la documentación con cada versión nueva de `Element` y los cambios reflejan los cambios del software de esa versión. Los cambios actuales y históricos se encuentran [aquí](https://github.com/ElemeFE/element/blob/master/CHANGELOG.en-US.md).
+  Añadamos la documentación con cada versión nueva de `Element` y los cambios reflejan los cambios del software de esa versión.
 </details>
 
 <details>

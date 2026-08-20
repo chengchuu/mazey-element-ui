@@ -22,8 +22,8 @@ In main.js:
 
 ```javascript
 import Vue from 'vue';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'mazey-element-ui';
+import 'mazey-element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 
 Vue.use(ElementUI);
@@ -55,7 +55,7 @@ Then edit .babelrc:
     [
       "component",
       {
-        "libraryName": "element-ui",
+        "libraryName": "mazey-element-ui",
         "styleLibraryName": "theme-chalk"
       }
     ]
@@ -67,7 +67,7 @@ Next, if you need Button and Select, edit main.js:
 
 ```javascript
 import Vue from 'vue';
-import { Button, Select } from 'element-ui';
+import { Button, Select } from 'mazey-element-ui';
 import App from './App.vue';
 
 Vue.component(Button.name, Button);
@@ -83,7 +83,7 @@ new Vue({
 });
 ```
 
-Full example (Component list reference [components.json](https://github.com/ElemeFE/element/blob/master/components.json))
+Full example (Component list reference [components.json](https://github.com/chengchuu/mazey-element-ui/blob/main/components.json))
 
 ```javascript
 import Vue from 'vue';
@@ -165,7 +165,7 @@ import {
   MessageBox,
   Message,
   Notification
-} from 'element-ui';
+} from 'mazey-element-ui';
 
 Vue.use(Pagination);
 Vue.use(Dialog);
@@ -260,7 +260,7 @@ Fully import Element：
 
 ```js
 import Vue from 'vue';
-import Element from 'element-ui';
+import Element from 'mazey-element-ui';
 Vue.use(Element, { size: 'small', zIndex: 3000 });
 ```
 
@@ -268,7 +268,7 @@ Partial import Element：
 
 ```js
 import Vue from 'vue';
-import { Button } from 'element-ui';
+import { Button } from 'mazey-element-ui';
 
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
 Vue.use(Button);
@@ -283,7 +283,3 @@ Now you have implemented Vue and Element to your project, and it's time to write
 ### Use Nuxt.js
 
 We can also start a project using [Nuxt.js](https://nuxtjs.org/):
-
-<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
-  <iframe src="https://glitch.com/embed/#!/embed/nuxt-with-element?path=nuxt.config.js&previewSize=0&attributionHidden=true" alt="nuxt-with-element on glitch" style="height: 100%; width: 100%; border: 0;"></iframe>
-</div>

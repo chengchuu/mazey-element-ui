@@ -1,13 +1,9 @@
 const path = require('path');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const launchEditorMiddleware = require('launch-editor-middleware');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const config = require('./config');
 
@@ -21,9 +17,10 @@ const webpackConfig = {
   } : (isPlay ? './examples/play.js' : './examples/entry.js'),
   output: {
     path: path.resolve(process.cwd(), './examples/element-ui/'),
-    publicPath: process.env.CI_ENV || '',
-    filename: '[name].[hash:7].js',
-    chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
+    publicPath: process.env.CI_ENV || '/mazey-element-ui/',
+    filename: '[name].[contenthash:7].js',
+    chunkFilename: isProd ? '[name].[contenthash:7].js' : '[name].js',
+    clean: true
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -33,16 +30,9 @@ const webpackConfig = {
   devServer: {
     host: '0.0.0.0',
     port: 8085,
-    publicPath: '/',
     hot: true,
-    before: (app) => {
-      /*
-       * 编辑器类型 :此处的指令表示的时各个各个编辑器在cmd或terminal中的命令
-       * webstorm
-       * code // vscode
-       * idea
-      */
-      app.use('/__open-in-editor', launchEditorMiddleware('code'));
+    devMiddleware: {
+      publicPath: '/mazey-element-ui/'
     }
   },
   performance: {
@@ -53,12 +43,6 @@ const webpackConfig = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(vue|jsx?)$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader'
-      },
       {
         test: /\.(jsx?|babel|es6)$/,
         include: process.cwd(),
@@ -100,36 +84,26 @@ const webpackConfig = {
       },
       {
         test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
-        loader: 'url-loader',
-        // todo: 这种写法有待调整
-        query: {
-          limit: 10000,
-          name: path.posix.join('static', '[name].[hash:7].[ext]')
+        type: 'asset',
+        parser: {
+          dataUrlCondition: { maxSize: 10000 }
+        },
+        generator: {
+          filename: path.posix.join('static', '[name].[contenthash:7][ext]')
         }
       }
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './examples/index.tpl',
-      filename: './index.html',
-      favicon: './examples/favicon.ico'
+      filename: './index.html'
     }),
-    new CopyWebpackPlugin([
-      { from: 'examples/versions.json' }
-    ]),
-    new ProgressBarPlugin(),
     new VueLoaderPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.FAAS_ENV': JSON.stringify(process.env.FAAS_ENV)
-    }),
-    new webpack.LoaderOptionsPlugin({
-      vue: {
-        compilerOptions: {
-          preserveWhitespace: false
-        }
-      }
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'examples/favicon.ico', to: 'favicon.ico' }
+      ]
     })
   ],
   optimization: {
@@ -139,30 +113,21 @@ const webpackConfig = {
 };
 
 if (isProd) {
-  webpackConfig.externals = {
-    vue: 'Vue',
-    'vue-router': 'VueRouter',
-    'highlight.js': 'hljs'
-  };
   webpackConfig.plugins.push(
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:7].css'
     })
   );
   webpackConfig.optimization.minimizer.push(
-    new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: false
-    }),
-    new OptimizeCSSAssetsPlugin({})
+    '...',
+    new CssMinimizerPlugin()
   );
   // https://webpack.js.org/configuration/optimization/#optimizationsplitchunks
   webpackConfig.optimization.splitChunks = {
     cacheGroups: {
       vendor: {
         test: /\/src\//,
-        name: 'element-ui',
+        name: 'mazey-element-ui',
         chunks: 'all'
       }
     }

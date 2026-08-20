@@ -7,7 +7,7 @@
 :::demo
 ```html
 <div>
-  <el-link href="https://element.eleme.io" target="_blank">默认链接</el-link>
+  <el-link href="https://chengchuu.github.io/mazey-element-ui/" target="_blank">默认链接</el-link>
   <el-link type="primary">主要链接</el-link>
   <el-link type="success">成功链接</el-link>
   <el-link type="warning">警告链接</el-link>

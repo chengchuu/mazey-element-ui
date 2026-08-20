@@ -331,7 +331,7 @@
             <p><%= 11 ></p>
             <router-link
               active-class="active"
-              to="/<%= lang >/theme"
+              to="/<%= lang >/component/custom-theme"
               exact><%= 5 >
             </router-link>
           </div>

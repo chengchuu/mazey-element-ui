@@ -1,5 +1,5 @@
-import { once, on } from 'element-ui/src/utils/dom';
-import { isMac } from 'element-ui/src/utils/util';
+import { once, on } from 'mazey-element-ui/src/utils/dom';
+import { isMac } from 'mazey-element-ui/src/utils/util';
 
 export default {
   bind(el, binding, vnode) {

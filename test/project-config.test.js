@@ -1,0 +1,100 @@
+'use strict';
+
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const test = require('node:test');
+
+const rootDir = path.resolve(__dirname, '..');
+const packageJson = require('../package.json');
+const workflow = fs.readFileSync(path.join(rootDir, '.github/workflows/validate-and-pages.yml'), 'utf8');
+const makefile = fs.readFileSync(path.join(rootDir, 'Makefile'), 'utf8');
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(rootDir, relativePath), 'utf8');
+}
+
+test('repository does not provision or pin the local package manager', () => {
+  assert.strictEqual(packageJson.packageManager, undefined);
+  assert.strictEqual(packageJson.scripts.bootstrap, undefined);
+  assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), false);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), false);
+});
+
+test('clean removes every generated package and test output boundary', () => {
+  const generatedPaths = [
+    'lib',
+    'dist',
+    'packages/*/lib',
+    'test/**/coverage',
+    'examples/icon.json',
+    'examples/element-ui',
+    'examples/pages/en-US',
+    'examples/pages/zh-CN',
+    'examples/pages/es',
+    'examples/pages/fr-FR'
+  ];
+
+  for (const generatedPath of generatedPaths) {
+    assert.match(packageJson.scripts.clean, new RegExp(`(?:^|\\s)${generatedPath.replace(/[*/]/g, '\\$&')}(?:$|\\s)`));
+  }
+});
+
+test('composite scripts use npm for nested package scripts', () => {
+  const compositeScripts = ['deploy:build', 'dev', 'dev:play', 'dist', 'test', 'test:watch', 'release:check'];
+  for (const name of compositeScripts) {
+    assert.match(packageJson.scripts[name], /\bnpm\s+(?:run|test)\b/);
+    assert.doesNotMatch(packageJson.scripts[name], /\bpnpm\b|run-package-scripts\.js/);
+  }
+});
+
+test('Make wrappers invoke only defined npm scripts', () => {
+  const invokedScripts = Array.from(makefile.matchAll(/\bnpm run ([\w:-]+)/g), match => match[1]);
+  for (const script of invokedScripts) {
+    assert.ok(packageJson.scripts[script], `Makefile invokes missing npm script: ${script}`);
+  }
+});
+
+test('documentation does not generate or link changelog pages', () => {
+  const changelogFiles = fs.readdirSync(rootDir).filter(file => /^CHANGELOG\..+\.md$/.test(file));
+  assert.deepStrictEqual(changelogFiles, []);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'examples/pages/template/changelog.tpl')), false);
+  assert.doesNotMatch(read('examples/nav.config.json'), /\/changelog|Changelog|更新日志|Lista de cambios/);
+  assert.doesNotMatch(read('examples/route.config.js'), /changelog/i);
+});
+
+test('maintained development and installation docs use npm commands', () => {
+  const documentationFiles = [
+    'AGENTS.md',
+    'README.md',
+    'guides/PROJECT_TAKEOVER_AND_PAGES_MIGRATION.md',
+    '.github/CONTRIBUTING.en-US.md',
+    '.github/CONTRIBUTING.es.md',
+    '.github/CONTRIBUTING.fr-FR.md',
+    '.github/CONTRIBUTING.zh-CN.md',
+    'examples/docs/en-US/installation.md',
+    'examples/docs/es/installation.md',
+    'examples/docs/fr-FR/installation.md',
+    'examples/docs/zh-CN/installation.md'
+  ];
+
+  for (const file of documentationFiles) {
+    const source = read(file);
+    assert.doesNotMatch(source, /\bpnpm(?:\s|@)|\bcorepack\b/, file);
+  }
+});
+
+test('GitHub Actions uses npm while Pages permissions stay deploy-only', () => {
+  assert.strictEqual((workflow.match(/- run: npm install/g) || []).length, 2);
+  assert.match(workflow, /- run: npm run release:check/);
+  assert.match(workflow, /- run: npm run deploy:build/);
+  assert.strictEqual((workflow.match(/pages: write/g) || []).length, 1);
+  assert.strictEqual((workflow.match(/id-token: write/g) || []).length, 1);
+
+  const validationJobs = workflow.slice(0, workflow.indexOf('  deploy:'));
+  const deployJob = workflow.slice(workflow.indexOf('  deploy:'));
+  assert.doesNotMatch(validationJobs, /concurrency:/);
+  assert.match(deployJob, /permissions:\n\s+contents: read\n\s+pages: write\n\s+id-token: write/);
+  assert.match(deployJob, /concurrency:\n\s+group: pages\n\s+cancel-in-progress: false/);
+});
