@@ -6,7 +6,7 @@ Add a dedicated GitHub Actions workflow that validates `mazey-element-ui` and pu
 
 Also update the existing GitHub Pages workflow to the required action versions. Keep npm publication and Pages deployment in separate workflows.
 
-Reference: `../mazey-npm-template/.github/workflows/publish-npm.yml`. Reuse its npm setup pattern, but omit its GitHub Packages publication, package-name rewrite, file restoration, and Git-tag creation.
+Reference: `./mazey-npm-template/.github/workflows/publish-npm.yml`. Reuse its npm setup pattern, but omit its GitHub Packages publication, package-name rewrite, file restoration, and Git-tag creation.
 
 ## Update the GitHub Pages workflow
 
