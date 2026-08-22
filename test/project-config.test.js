@@ -66,6 +66,15 @@ test('clean removes every generated package and test output boundary', () => {
   }
 });
 
+test('package runtime and smoke test use the package metadata version', () => {
+  const sourceEntry = read('src/index.js');
+  const packageSmokeTest = read('build/bin/test-package.js');
+
+  assert.ok(sourceEntry.includes(`version: '${packageJson.version}'`));
+  assert.match(packageSmokeTest, /JSON\.stringify\(packageJson\.version\)/);
+  assert.doesNotMatch(packageSmokeTest, /assert\.strictEqual\(ElementUI\.version, ['"]\d/);
+});
+
 test('composite scripts use npm for nested package scripts', () => {
   const compositeScripts = ['deploy:build', 'dev', 'dev:play', 'dist', 'test', 'test:watch', 'release:check'];
   for (const name of compositeScripts) {
