@@ -10,7 +10,7 @@
 - Theme Chalk at `lib/theme-chalk/index.css` and declarations at `types/index.d.ts`;
 - supported deep imports below `lib/`.
 
-Use npm for repository commands and GitHub Actions. Do not add a package-manager pin, Corepack bootstrap, repository-owned installer, or dependency cache unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored.
+Use npm for repository commands and GitHub Actions. Do not add a package-manager pin, Corepack bootstrap, repository-owned installer, dependency cache, or committed dependency lockfile unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored, and the repository-policy tests require alternative lock and workspace files to remain absent.
 
 ## Repository map
 
@@ -22,6 +22,7 @@ Use npm for repository commands and GitHub Actions. Do not add a package-manager
 - `test/unit/specs/` contains the Karma, Mocha, and ChromeHeadless browser suite. `test/project-config.test.js` protects repository and workflow policy, while `build/bin/test-package.js` validates an installed package consumer.
 - `build/` contains the Babel and Webpack 5 configurations, Markdown loader, source generators, package builders, Pages finalizer, and pack checks.
 - `.github/workflows/validate-and-pages.yml` validates `main` and `release/v2`; only a push to `release/v2` deploys Pages.
+- `.github/workflows/publish-npm.yml` validates pull requests and release runs; only an eligible `release/v2` push or manual dispatch can publish to npm.
 
 ## Generated files and build ownership
 
@@ -60,7 +61,11 @@ The public site is `https://chengchuu.github.io/mazey-element-ui/`. Keep Webpack
 
 Keep maintained package, repository, issue, contribution, installation, and release links on `mazey-element-ui`. Preserve upstream Element UI links when they are historical citations or attribution. Do not restore the retired online theme editor, private service probes, analytics, or CDN-loaded documentation runtime dependencies.
 
-GitHub Actions installs with npm and does not use dependency caching. The validation job runs for pushes and pull requests targeting `main` or `release/v2`, plus manual dispatch. The deploy job owns `pages: write` and `id-token: write`, uses the `pages` concurrency group, uploads `examples/element-ui/`, and runs only after validation on a push to `release/v2`.
+GitHub Actions uses Node.js 22, installs with `npm install`, and explicitly disables dependency caching. Both workflows keep repository permissions read-only unless a deployment job needs narrower additional permissions.
+
+The Pages workflow validates pushes and pull requests for `main` and `release/v2`, plus manual dispatches. Its deploy job owns `pages: write` and `id-token: write`, uses the non-canceling `pages` concurrency group, uploads `examples/element-ui/`, and runs only after successful validation on a push to `release/v2`.
+
+The npm workflow validates pull requests to `main` and `release/v2`, pushes to `release/v2`, and manual dispatches. Publication requires successful validation, the exact `refs/heads/release/v2` ref, and either a push or manual-dispatch event. The protected `npm` environment gates the publish job. Before building, the workflow checks the public npm registry and stops if `name@version` already exists; only an npm `E404` permits `npm run dist` to continue. Other registry failures fail closed. `NPM_TOKEN` is exposed as `NODE_AUTH_TOKEN` only to the final `npm publish --access public` step. The workflow does not rewrite package metadata, publish to GitHub Packages, create tags or releases, or deploy documentation.
 
 Do not publish, deploy, create releases or tags, stage files, or commit changes unless the user explicitly requests the action.
 
@@ -68,7 +73,7 @@ Do not publish, deploy, create releases or tags, stage files, or commit changes 
 
 Keep changes narrow and preserve unrelated work. When public behavior changes, update the implementation, declarations, unit tests, package smoke test, examples, and documentation together. Add components through `components.json` and the established component and type structure; do not manually splice generated registries or bundles.
 
-Start with the most focused relevant check. Before handoff, run the applicable broader checks, then inspect the final diff and generated boundaries:
+Start with the most focused relevant check. `test/project-config.test.js` protects the package-manager, Pages, and npm-publication workflow contracts. Before handoff, run the applicable broader checks, then inspect the final diff and generated boundaries:
 
 ```bash
 npm run lint
