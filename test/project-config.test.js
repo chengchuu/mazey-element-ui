@@ -43,7 +43,7 @@ test('repository does not provision or pin the local package manager', () => {
   for (const workflow of [pagesWorkflow, publishWorkflow]) {
     assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
   }
-  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), false);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), true);
   assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), false);
 });
 

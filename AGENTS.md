@@ -10,7 +10,7 @@
 - Theme Chalk at `lib/theme-chalk/index.css` and declarations at `types/index.d.ts`;
 - supported deep imports below `lib/`.
 
-Use npm for repository commands and GitHub Actions. Do not add a package-manager pin, Corepack bootstrap, repository-owned installer, dependency cache, or committed dependency lockfile unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored, and the repository-policy tests require alternative lock and workspace files to remain absent.
+Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the committed dependency-resolution snapshot, but npm remains the command runner. Do not add a `packageManager` pin, Corepack bootstrap, repository-owned installer, dependency cache, or workspace configuration unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored.
 
 ## Repository map
 
