@@ -1,0 +1,72 @@
+name: Validate and publish npm
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/v2
+  push:
+    branches:
+      - release/v2
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-npm-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm install
+      - run: npm run release:check
+
+  publish:
+    if: >-
+      github.ref == 'refs/heads/release/v2' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+          registry-url: "https://registry.npmjs.org/"
+      - run: npm install
+      - name: Verify package version is unpublished
+        shell: bash
+        run: |
+          PACKAGE_NAME="$(node -p "require('./package.json').name")"
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          PACKAGE_SPEC="${PACKAGE_NAME}@${PACKAGE_VERSION}"
+          VIEW_OUTPUT="${RUNNER_TEMP}/npm-view.out"
+          VIEW_ERROR="${RUNNER_TEMP}/npm-view.err"
+
+          if npm view "$PACKAGE_SPEC" version --registry="https://registry.npmjs.org/" >"$VIEW_OUTPUT" 2>"$VIEW_ERROR"; then
+            echo "::error title=Package version already published::${PACKAGE_SPEC} already exists on npm."
+            exit 1
+          fi
+
+          if grep -q "E404" "$VIEW_ERROR"; then
+            echo "${PACKAGE_SPEC} is unpublished."
+            exit 0
+          fi
+
+          cat "$VIEW_ERROR" >&2
+          exit 1
+      - run: npm run dist
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
