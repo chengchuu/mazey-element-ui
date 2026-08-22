@@ -1,6 +1,6 @@
 {
   "name": "mazey-element-ui",
-  "version": "2.15.15",
+  "version": "2.15.16",
   "description": "A maintained Vue 2 desktop component library based on Element UI.",
   "main": "lib/element-ui.common.js",
   "files": [
