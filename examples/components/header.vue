@@ -3,21 +3,6 @@
     height: 80px;
   }
 
-  #v3-banner {
-    background-color: #409EFF;
-    min-height: 30px;
-    padding: 5px 60px;
-    z-index: 19;
-    box-sizing: border-box;
-    text-align: center;
-    color: #eee;
-  }
-
-  #v3-banner a {
-    color: #FFF;
-    font-weight: bold;
-  }
-
   .header {
     height: 80px;
     background-color: #fff;
@@ -272,18 +257,6 @@
 </style>
 <template>
   <div class="headerWrapper">
-    <div id="v3-banner" v-if="isHome">
-      <template v-if="lang === 'zh-CN'">
-        您正在浏览 Mazey Element UI 的 Vue 2.x 文档；
-        <a href="https://element-plus.org/#/zh-CN">点击查看 Vue 3.x 版本。</a>
-        饿了么开源了自研多端框架 MorJS，
-        <a href="https://github.com/eleme/morjs">欢迎点击查看或试用 👏🏻</a>
-      </template>
-      <template v-else>
-        You’re browsing the Mazey Element UI documentation for Vue 2.x.
-        <a href="https://element-plus.org">Click here</a> for Vue 3.x version
-      </template>
-    </div>
     <header class="header" ref="header">
       <div class="container">
         <h1><router-link :to="`/${ lang }`">
@@ -388,9 +361,6 @@
       },
       isComponentPage() {
         return /^component/.test(this.$route.name);
-      },
-      isHome() {
-        return /^home/.test(this.$route.name);
       }
     },
     methods: {
