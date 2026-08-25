@@ -1,1 +1,5 @@
+build/** linguist-detectable=false
+examples/** linguist-detectable=false
+guides/** linguist-detectable=false
+test/** linguist-detectable=false
 test/**/*.js linguist-language=Vue

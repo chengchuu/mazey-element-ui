@@ -2,7 +2,7 @@
 
 ## Project contract
 
-`mazey-element-ui` is a maintained fork of Element UI 2.15.14 for Vue 2 desktop applications. The package is currently version 2.15.15 and supports Node.js 22 or later for development. Preserve its Vue `^2.5.17` peer contract and established public surface unless a task explicitly authorizes a breaking change:
+`mazey-element-ui` is a maintained fork of Element UI 2.15.14 for Vue 2 desktop applications. `package.json` owns the release version, and `npm run build:file` copies it into the generated runtime entry. CI and maintained development documentation use Node.js 22, but the package manifest intentionally declares no `engines` range. Preserve its Vue `^2.5.17` peer contract and established public surface unless a task explicitly authorizes a breaking change:
 
 - `El*` component names and `el-*` CSS classes;
 - the default plugin, named component exports, `$ELEMENT`, and service APIs;
@@ -24,11 +24,20 @@ Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the comm
 - `.github/workflows/validate-and-pages.yml` validates `main` and `release/v2`; only a push to `release/v2` deploys Pages.
 - `.github/workflows/publish-npm.yml` validates pull requests and release runs; only an eligible `release/v2` push or manual dispatch can publish to npm.
 
+## Entry points and data flow
+
+- Package consumers enter through `package.json`: `main` resolves to the generated CommonJS bundle, `unpkg` resolves to the UMD bundle, `style` resolves to Theme Chalk, and `typings` resolves to `types/index.d.ts`. `components.json` also drives the supported per-component bundles below `lib/`.
+- `build/bin/build-entry.js` reads `components.json` and the package version to generate `src/index.js`. Its `install` function registers components, the infinite-scroll and loading directives, `$ELEMENT`, and the loading, message-box, notification, and message services on Vue.
+- Components exchange application data through Vue props, events, slots, `provide`/`inject`, and the `src/mixins/emitter.js` dispatch/broadcast helpers. `src/locale/` owns active translations, while `src/utils/popup/popup-manager.js` coordinates overlay instances, modal state, and z-index allocation.
+- The documentation SPA starts at `examples/entry.js`, installs the generated full-library entry and Vue Router, registers documentation layout components, and mounts `examples/app.vue`. `examples/route.config.js` derives lazy hash routes from `examples/nav.config.json`, generated page shells, and maintained Markdown below `examples/docs/`; route changes update syntax highlighting, document titles, and the active locale.
+- `build/webpack.demo.js` bundles the documentation SPA into `examples/element-ui/`. `build/bin/finalize-pages.js` then adds `.nojekyll`, `robots.txt`, and the root-only sitemap used by GitHub Pages.
+
 ## Generated files and build ownership
 
 Do not hand-edit generated output. Change the owning source, template, registry, or script and regenerate it.
 
 - `npm run build:file` generates `src/index.js`, icon metadata, and localized files below `examples/pages/{en-US,zh-CN,es,fr-FR}/`.
+- `npm run build:theme` regenerates `packages/theme-chalk/src/index.scss`, compiles Theme Chalk, and copies its CSS and fonts into `lib/theme-chalk/`.
 - `npm run dist` cleans and rebuilds `lib/` and `packages/*/lib/` with Webpack, Babel, Gulp, and Dart Sass.
 - `npm test` rebuilds Theme Chalk and may create `dist/` plus coverage output.
 - `npm run deploy:build` recreates `examples/element-ui/`, then adds `.nojekyll`, `robots.txt`, and a root-only `sitemap.xml`.
@@ -42,6 +51,7 @@ npm install
 npm run dev          # Build source-derived files and serve docs on port 8085
 npm run dev:play     # Serve the component playground entry
 npm run build:file   # Regenerate source and localized documentation files
+npm run build:theme  # Regenerate and compile Theme Chalk
 npm run lint         # Lint src, test, packages, and build
 npm test             # Run the single-pass browser suite
 npm run test:watch   # Run the browser suite in watch mode
