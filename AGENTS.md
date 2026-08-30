@@ -19,7 +19,8 @@ Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the comm
 - `src/` contains shared locale, directive, mixin, transition, and utility code. `src/index.js` is generated from `components.json`.
 - `types/` defines the public TypeScript contract; update it with any public runtime change.
 - `examples/` is the Vue 2 documentation and component-demo SPA. It uses hash routing and must remain usable below `/mazey-element-ui/`.
-- `test/unit/specs/` contains the Karma, Mocha, and ChromeHeadless browser suite. `test/project-config.test.js` protects repository and workflow policy, while `build/bin/test-package.js` validates an installed package consumer.
+- `guides/` contains planning and reference notes. Treat implementation plans as historical intent when the live scripts, workflows, or package metadata differ.
+- `test/unit/specs/` contains the Karma, Mocha, and ChromeHeadless browser suite. `test/project-config.test.js` protects repository and workflow policy, while `build/bin/test-package.js` validates an installed package consumer. `test/ssr/require.test.js` is a standalone built-bundle probe and is not invoked by a package script.
 - `build/` contains the Babel and Webpack 5 configurations, Markdown loader, source generators, package builders, Pages finalizer, and pack checks.
 - `.github/workflows/validate-and-pages.yml` validates `main` and `release/v2`; only a push to `release/v2` deploys Pages.
 - `.github/workflows/publish-npm.yml` validates pull requests and release runs; only an eligible `release/v2` push or manual dispatch can publish to npm.
@@ -71,7 +72,7 @@ The public site is `https://chengchuu.github.io/mazey-element-ui/`. Keep Webpack
 
 Keep maintained package, repository, issue, contribution, installation, and release links on `mazey-element-ui`. Preserve upstream Element UI links when they are historical citations or attribution. Do not restore the retired online theme editor, private service probes, analytics, or CDN-loaded documentation runtime dependencies.
 
-GitHub Actions uses Node.js 22, installs with `npm install`, and explicitly disables dependency caching. Both workflows keep repository permissions read-only unless a deployment job needs narrower additional permissions.
+GitHub Actions uses Node.js 22, installs with `npm install`, and explicitly disables dependency caching. Validation and publication use `actions/checkout@v7` and `actions/setup-node@v7`; Pages deployment additionally uses `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, and `actions/deploy-pages@v5`. Both workflows keep repository permissions read-only unless a deployment job needs narrower additional permissions.
 
 The Pages workflow validates pushes and pull requests for `main` and `release/v2`, plus manual dispatches. Its deploy job owns `pages: write` and `id-token: write`, uses the non-canceling `pages` concurrency group, uploads `examples/element-ui/`, and runs only after successful validation on a push to `release/v2`.
 
