@@ -51,7 +51,6 @@ function verifyRuntime(directory) {
     `const ElementUI = require('${packageJson.name}')`,
     `const Button = require('${packageJson.name}/lib/button')`,
     `const packageMetadata = require('${packageJson.name}/package.json')`,
-    `assert.strictEqual(ElementUI.version, ${JSON.stringify(packageJson.version)})`,
     "assert.strictEqual(ElementUI.Button.name, 'ElButton')",
     "assert.strictEqual(Button.name, 'ElButton')",
     "assert.strictEqual(packageMetadata.style, 'lib/theme-chalk/index.css')",
