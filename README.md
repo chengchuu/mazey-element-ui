@@ -1,12 +1,6 @@
-<p align="center">
-  <img src="element_logo.svg" alt="Mazey Element UI">
-</p>
-
 # Mazey Element UI
 
-Mazey Element UI is a maintained fork of Element UI for Vue 2 desktop applications. Version 2.15.15 retains the upstream Vue 2 public API, including `El*` exports, `el-*` component names, `$ELEMENT`, the `ELEMENT` browser global, and existing `ElementUI` TypeScript symbols.
-
-Element UI 2.15.14 is the upstream source for this fork. The original project history, license, issue references, and contributor attribution remain in this repository.
+Mazey Element UI is a maintained fork of Element UI 2.15.14 for Vue 2 desktop applications. Version 2.15.15 preserves the upstream public API. The repository retains upstream history, license, issue references, and contributor attribution.
 
 ## Documentation
 
@@ -15,15 +9,6 @@ Element UI 2.15.14 is the upstream source for this fork. The original project hi
 - [Español](https://chengchuu.github.io/mazey-element-ui/#/es)
 - [Français](https://chengchuu.github.io/mazey-element-ui/#/fr-FR)
 - [Customize the theme](https://chengchuu.github.io/mazey-element-ui/#/en-US/component/custom-theme)
-- [FAQ](FAQ.md)
-
-For Vue 3 projects, see [Element Plus](https://github.com/element-plus/element-plus). The following independent community projects remain useful references:
-
-- [Element for React](https://github.com/elemefe/element-react)
-- [Element for Angular](https://github.com/ElemeFE/element-angular)
-- [MorJS](https://github.com/eleme/morjs)
-- [awesome-element](https://github.com/ElementUI/awesome-element)
-- [element-starter](https://github.com/ElementUI/element-starter)
 
 ## Install
 

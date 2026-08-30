@@ -7,18 +7,43 @@ const test = require('node:test');
 
 const rootDir = path.resolve(__dirname, '..');
 const packageJson = require('../package.json');
-const workflow = fs.readFileSync(path.join(rootDir, '.github/workflows/validate-and-pages.yml'), 'utf8');
+const pagesWorkflow = fs.readFileSync(path.join(rootDir, '.github/workflows/validate-and-pages.yml'), 'utf8');
+const publishWorkflow = fs.readFileSync(path.join(rootDir, '.github/workflows/publish-npm.yml'), 'utf8');
 const makefile = fs.readFileSync(path.join(rootDir, 'Makefile'), 'utf8');
 
 function read(relativePath) {
   return fs.readFileSync(path.join(rootDir, relativePath), 'utf8');
 }
 
+function getJob(workflow, name) {
+  const marker = `  ${name}:`;
+  const start = workflow.indexOf(marker);
+  assert.notStrictEqual(start, -1, `Missing workflow job: ${name}`);
+  const remainder = workflow.slice(start + marker.length);
+  const nextJob = remainder.search(/\n {2}[\w-]+:\n/);
+  return nextJob === -1 ? workflow.slice(start) : workflow.slice(start, start + marker.length + nextJob);
+}
+
+function getNamedStep(job, name) {
+  const marker = `      - name: ${name}`;
+  const start = job.indexOf(marker);
+  assert.notStrictEqual(start, -1, `Missing workflow step: ${name}`);
+  const remainder = job.slice(start + marker.length);
+  const nextStep = remainder.search(/\n {6}- (?:name|uses|run):/);
+  return nextStep === -1 ? job.slice(start) : job.slice(start, start + marker.length + nextStep);
+}
+
+function getActions(source) {
+  return Array.from(source.matchAll(/^\s+(?:- )?uses: ([^\s]+)$/gm), match => match[1]);
+}
+
 test('repository does not provision or pin the local package manager', () => {
   assert.strictEqual(packageJson.packageManager, undefined);
   assert.strictEqual(packageJson.scripts.bootstrap, undefined);
-  assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
-  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), false);
+  for (const workflow of [pagesWorkflow, publishWorkflow]) {
+    assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
+  }
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), true);
   assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), false);
 });
 
@@ -39,6 +64,15 @@ test('clean removes every generated package and test output boundary', () => {
   for (const generatedPath of generatedPaths) {
     assert.match(packageJson.scripts.clean, new RegExp(`(?:^|\\s)${generatedPath.replace(/[*/]/g, '\\$&')}(?:$|\\s)`));
   }
+});
+
+test('package runtime and smoke test use the package metadata version', () => {
+  const sourceEntry = read('src/index.js');
+  const packageSmokeTest = read('build/bin/test-package.js');
+
+  assert.ok(sourceEntry.includes(`version: '${packageJson.version}'`));
+  assert.match(packageSmokeTest, /JSON\.stringify\(packageJson\.version\)/);
+  assert.doesNotMatch(packageSmokeTest, /assert\.strictEqual\(ElementUI\.version, ['"]\d/);
 });
 
 test('composite scripts use npm for nested package scripts', () => {
@@ -85,16 +119,92 @@ test('maintained development and installation docs use npm commands', () => {
   }
 });
 
-test('GitHub Actions uses npm while Pages permissions stay deploy-only', () => {
-  assert.strictEqual((workflow.match(/- run: npm install/g) || []).length, 2);
-  assert.match(workflow, /- run: npm run release:check/);
-  assert.match(workflow, /- run: npm run deploy:build/);
-  assert.strictEqual((workflow.match(/pages: write/g) || []).length, 1);
-  assert.strictEqual((workflow.match(/id-token: write/g) || []).length, 1);
+test('Pages uses current actions while permissions stay deploy-only', () => {
+  const validateJob = getJob(pagesWorkflow, 'validate');
+  const deployJob = getJob(pagesWorkflow, 'deploy');
 
-  const validationJobs = workflow.slice(0, workflow.indexOf('  deploy:'));
-  const deployJob = workflow.slice(workflow.indexOf('  deploy:'));
-  assert.doesNotMatch(validationJobs, /concurrency:/);
+  assert.deepStrictEqual(getActions(validateJob), ['actions/checkout@v7', 'actions/setup-node@v7']);
+  assert.deepStrictEqual(getActions(deployJob), [
+    'actions/checkout@v7',
+    'actions/setup-node@v7',
+    'actions/configure-pages@v6',
+    'actions/upload-pages-artifact@v5',
+    'actions/deploy-pages@v5'
+  ]);
+  assert.strictEqual((pagesWorkflow.match(/- run: npm install/g) || []).length, 2);
+  assert.strictEqual((pagesWorkflow.match(/node-version: 22/g) || []).length, 2);
+  assert.strictEqual((pagesWorkflow.match(/package-manager-cache: false/g) || []).length, 2);
+  assert.match(validateJob, /- run: npm run release:check/);
+  assert.match(deployJob, /- run: npm run deploy:build/);
+  assert.strictEqual((pagesWorkflow.match(/pages: write/g) || []).length, 1);
+  assert.strictEqual((pagesWorkflow.match(/id-token: write/g) || []).length, 1);
+
+  assert.doesNotMatch(validateJob, /concurrency:/);
   assert.match(deployJob, /permissions:\n\s+contents: read\n\s+pages: write\n\s+id-token: write/);
   assert.match(deployJob, /concurrency:\n\s+group: pages\n\s+cancel-in-progress: false/);
+});
+
+test('npm publication is validation-gated and release-branch only', () => {
+  const workflowConfig = publishWorkflow.slice(0, publishWorkflow.indexOf('\njobs:'));
+  const validateJob = getJob(publishWorkflow, 'validate');
+  const publishJob = getJob(publishWorkflow, 'publish');
+
+  assert.match(workflowConfig, /pull_request:\n\s+branches:\n\s+- main\n\s+- release\/v2/);
+  assert.match(workflowConfig, /push:\n\s+branches:\n\s+- release\/v2/);
+  assert.match(workflowConfig, /workflow_dispatch:/);
+  assert.match(workflowConfig, /permissions:\n\s+contents: read/);
+  assert.match(
+    workflowConfig,
+    /concurrency:\n\s+group: publish-npm-\$\{\{ github\.ref \}\}\n\s+cancel-in-progress: false/
+  );
+  assert.deepStrictEqual(getActions(validateJob), ['actions/checkout@v7', 'actions/setup-node@v7']);
+  assert.match(validateJob, /node-version: 22/);
+  assert.match(validateJob, /package-manager-cache: false/);
+  assert.match(validateJob, /- run: npm install/);
+  assert.match(validateJob, /- run: npm run release:check/);
+  assert.match(publishJob, /needs: validate/);
+  assert.match(publishJob, /environment: npm/);
+  assert.match(publishJob, /github\.ref == 'refs\/heads\/release\/v2'/);
+  assert.match(publishJob, /github\.event_name == 'push'/);
+  assert.match(publishJob, /github\.event_name == 'workflow_dispatch'/);
+});
+
+test('npm publication fails closed before building an existing version', () => {
+  const publishJob = getJob(publishWorkflow, 'publish');
+  const versionStep = getNamedStep(publishJob, 'Verify package version is unpublished');
+
+  assert.deepStrictEqual(getActions(publishJob), ['actions/checkout@v7', 'actions/setup-node@v7']);
+  assert.match(publishJob, /node-version: 22/);
+  assert.match(publishJob, /package-manager-cache: false/);
+  assert.match(publishJob, /registry-url: "https:\/\/registry\.npmjs\.org\/"/);
+  assert.match(publishJob, /- run: npm install/);
+  assert.match(versionStep, /require\('\.\/package\.json'\)\.name/);
+  assert.match(versionStep, /require\('\.\/package\.json'\)\.version/);
+  assert.match(versionStep, /npm view "\$PACKAGE_SPEC" version --registry="https:\/\/registry\.npmjs\.org\/"/);
+  assert.match(versionStep, /grep -q "E404"/);
+  assert.match(versionStep, /cat "\$VIEW_ERROR" >&2\n\s+exit 1/);
+
+  const versionCheck = publishJob.indexOf('- name: Verify package version is unpublished');
+  const build = publishJob.indexOf('- run: npm run dist');
+  const publish = publishJob.indexOf('run: npm publish --access public');
+  assert.ok(versionCheck !== -1 && versionCheck < build && build < publish);
+});
+
+test('npm credentials and side effects are restricted to public npm publication', () => {
+  const publishJob = getJob(publishWorkflow, 'publish');
+  const publishStep = getNamedStep(publishJob, 'Publish to npm');
+
+  assert.strictEqual((publishWorkflow.match(/NPM_TOKEN/g) || []).length, 1);
+  assert.strictEqual((publishWorkflow.match(/NODE_AUTH_TOKEN/g) || []).length, 1);
+  assert.match(publishStep, /run: npm publish --access public/);
+  assert.match(publishStep, /env:\n\s+NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/);
+  assert.doesNotMatch(
+    publishJob.slice(0, publishJob.indexOf('- name: Publish to npm')),
+    /NPM_TOKEN|NODE_AUTH_TOKEN/
+  );
+  assert.doesNotMatch(publishWorkflow, /contents: write|packages: write|pages: write|id-token: write/);
+  assert.doesNotMatch(
+    publishJob,
+    /npm\.pkg\.github\.com|change-package-name|npm pkg set|git (?:tag|push)|gh release|deploy:build|actions\/(?:configure|upload|deploy)-pages|(?:>|>>)\s*\.npmrc/
+  );
 });

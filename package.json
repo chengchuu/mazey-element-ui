@@ -1,6 +1,6 @@
 {
   "name": "mazey-element-ui",
-  "version": "2.15.15",
+  "version": "2.15.17",
   "description": "A maintained Vue 2 desktop component library based on Element UI.",
   "main": "lib/element-ui.common.js",
   "files": [
@@ -11,9 +11,6 @@
     "web-types.json"
   ],
   "typings": "types/index.d.ts",
-  "engines": {
-    "node": ">=22"
-  },
   "scripts": {
     "build:file": "node build/bin/iconInit.js && node build/bin/build-entry.js && node build/bin/i18n.js",
     "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
