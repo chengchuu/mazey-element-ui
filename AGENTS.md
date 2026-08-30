@@ -41,7 +41,7 @@ Do not hand-edit generated output. Change the owning source, template, registry,
 - `npm run build:theme` regenerates `packages/theme-chalk/src/index.scss`, compiles Theme Chalk, and copies its CSS and fonts into `lib/theme-chalk/`.
 - `npm run dist` cleans and rebuilds `lib/` and `packages/*/lib/` with Webpack, Babel, Gulp, and Dart Sass.
 - `npm test` rebuilds Theme Chalk and may create `dist/` plus coverage output.
-- `npm run deploy:build` recreates `examples/element-ui/`, then adds `.nojekyll`, `robots.txt`, and a root-only `sitemap.xml`.
+- `npm run docs` recreates `examples/element-ui/`, then adds `.nojekyll`, `robots.txt`, and a root-only `sitemap.xml`.
 
 The generated and ignored boundaries include `lib/`, `/dist/`, `packages/*/lib/`, `test/**/coverage`, localized generated page directories, and `examples/element-ui/`. The npm allowlist intentionally publishes `lib/`, `src/`, `packages/`, `types/`, and `web-types.json`; source changes in those directories can therefore affect consumers even when they are not package entry points.
 
@@ -58,7 +58,7 @@ npm test             # Run the single-pass browser suite
 npm run test:watch   # Run the browser suite in watch mode
 npm run test:project # Run repository-policy regressions
 npm run dist         # Build all publishable package artifacts
-npm run deploy:build # Build the GitHub Pages artifact
+npm run docs         # Build the GitHub Pages artifact
 npm run test:package # Pack, install, and verify an npm consumer
 npm run pack:check   # Inspect the npm archive with a dry run
 npm run release:check
@@ -91,7 +91,7 @@ npm run lint
 npm run test:project
 npm test
 npm run dist
-npm run deploy:build
+npm run docs
 npm run test:package
 npm run pack:check
 git diff --check

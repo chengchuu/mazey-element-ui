@@ -76,7 +76,7 @@ test('package runtime and smoke test use the package metadata version', () => {
 });
 
 test('composite scripts use npm for nested package scripts', () => {
-  const compositeScripts = ['deploy:build', 'dev', 'dev:play', 'dist', 'test', 'test:watch', 'release:check'];
+  const compositeScripts = ['docs', 'dev', 'dev:play', 'dist', 'test', 'test:watch', 'release:check'];
   for (const name of compositeScripts) {
     assert.match(packageJson.scripts[name], /\bnpm\s+(?:run|test)\b/);
     assert.doesNotMatch(packageJson.scripts[name], /\bpnpm\b|run-package-scripts\.js/);
@@ -135,7 +135,7 @@ test('Pages uses current actions while permissions stay deploy-only', () => {
   assert.strictEqual((pagesWorkflow.match(/node-version: 22/g) || []).length, 2);
   assert.strictEqual((pagesWorkflow.match(/package-manager-cache: false/g) || []).length, 2);
   assert.match(validateJob, /- run: npm run release:check/);
-  assert.match(deployJob, /- run: npm run deploy:build/);
+  assert.match(deployJob, /- run: npm run docs/);
   assert.strictEqual((pagesWorkflow.match(/pages: write/g) || []).length, 1);
   assert.strictEqual((pagesWorkflow.match(/id-token: write/g) || []).length, 1);
 
@@ -205,6 +205,6 @@ test('npm credentials and side effects are restricted to public npm publication'
   assert.doesNotMatch(publishWorkflow, /contents: write|packages: write|pages: write|id-token: write/);
   assert.doesNotMatch(
     publishJob,
-    /npm\.pkg\.github\.com|change-package-name|npm pkg set|git (?:tag|push)|gh release|deploy:build|actions\/(?:configure|upload|deploy)-pages|(?:>|>>)\s*\.npmrc/
+    /npm\.pkg\.github\.com|change-package-name|npm pkg set|git (?:tag|push)|gh release|npm run docs|actions\/(?:configure|upload|deploy)-pages|(?:>|>>)\s*\.npmrc/
   );
 });

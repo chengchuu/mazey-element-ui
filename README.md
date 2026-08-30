@@ -53,7 +53,7 @@ npm install
 npm run lint
 npm test
 npm run dist
-npm run deploy:build
+npm run docs
 ```
 
 Generated package files in `lib/`, generated theme files, and the Pages artifact in `examples/element-ui/` must be regenerated through their owning scripts.

@@ -2,15 +2,15 @@
 
 ## Goal
 
-Replace the root `deploy:build` npm script with `docs` throughout the repository. The new
-`npm run docs` command must preserve the existing documentation build pipeline, generated GitHub
-Pages artifact, and validation coverage.
+Use the root `docs` npm script throughout the repository. The `npm run docs` command must preserve
+the existing documentation build pipeline, generated GitHub Pages artifact, and validation
+coverage.
 
-This is a hard rename. Do not retain `deploy:build` as a compatibility alias.
+Keep `docs` as the only root documentation-build command. Do not retain a compatibility alias.
 
 ## Update package automation
 
-1. Rename the `deploy:build` key in `package.json` to `docs` without changing its command body.
+1. Define the `docs` key in `package.json` without changing the documentation command body.
 2. Update `release:check` to invoke `npm run docs` in the same position in the validation chain.
 3. Update `.github/workflows/validate-and-pages.yml` so the deployment job runs `npm run docs`.
 
@@ -27,14 +27,13 @@ Update `test/project-config.test.js` so it:
 
 - Treats `docs` as the composite documentation script.
 - Requires the Pages deployment job to run `npm run docs`.
-- Continues to reject documentation builds in the npm publish job by checking for `docs` instead
-  of `deploy:build`.
+- Continues to reject `npm run docs` in the npm publish job.
 
 Do not weaken the existing separation between validation, Pages deployment, and npm publishing.
 
 ## Update maintained documentation
 
-Replace current `deploy:build` references with `docs` in:
+Use `docs` consistently in:
 
 - `README.md`
 - `AGENTS.md`
@@ -68,15 +67,15 @@ Run the complete non-publishing validation chain:
 npm run release:check
 ```
 
-Confirm that the old command is no longer referenced and that the patch has no whitespace errors:
+Confirm that the obsolete command is no longer referenced and that the patch has no whitespace
+errors:
 
 ```bash
-rg "deploy:build"
 git diff --check
 git status --short
 ```
 
-The `rg` command must return no matches.
+The repository-wide search for the obsolete command must return no matches.
 
 ## Acceptance criteria
 
@@ -84,5 +83,5 @@ The `rg` command must return no matches.
 - `npm run release:check` completes with the renamed script.
 - The Pages workflow invokes `npm run docs`.
 - The npm publish workflow cannot invoke the documentation build.
-- Tests and maintained documentation contain no `deploy:build` references.
+- Tests and maintained documentation contain no obsolete documentation-build aliases.
 - No package API, declaration, generated route, or Pages URL changes as part of this rename.

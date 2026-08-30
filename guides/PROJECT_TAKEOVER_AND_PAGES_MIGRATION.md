@@ -100,7 +100,7 @@ npm install
 npm run lint
 npm test
 npm run dist
-npm run deploy:build
+npm run docs
 npm run release:check
 npm pack --dry-run
 git diff --check
