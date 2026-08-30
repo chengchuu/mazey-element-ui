@@ -33,10 +33,10 @@ We are excited that you are interested in contributing to Element. Before submit
 - Merging a PR takes two maintainers: one approves the changes after reviewing, and then the other reviews and merges.
 
 ## Prerequisites
-Node.js 22 and npm are required.
+Node.js 22, pnpm, and npm are required.
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-npm install
+pnpm install
 npm run dev
 
 # open http://localhost:8085/mazey-element-ui/

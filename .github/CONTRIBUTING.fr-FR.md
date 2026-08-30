@@ -33,10 +33,10 @@ Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre 
 - La fusion d'un PR nécessite deux responsables: l'un approuve les modifications après révision, puis l'autre les révise et les fusionne.
 
 ## Pré-requis
-Node.js 22 et npm sont requis.
+Node.js 22, pnpm et npm sont requis.
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-npm install
+pnpm install
 npm run dev
 
 # open http://localhost:8085/mazey-element-ui/

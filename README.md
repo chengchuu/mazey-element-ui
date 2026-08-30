@@ -46,10 +46,11 @@ See the [quick start](https://chengchuu.github.io/mazey-element-ui/#/en-US/compo
 
 ## Development
 
-Development requires Node.js 22 and npm.
+Development requires Node.js 22. Use pnpm for dependency installation and npm for development
+scripts.
 
 ```bash
-npm install
+pnpm install
 npm run lint
 npm test
 npm run dist

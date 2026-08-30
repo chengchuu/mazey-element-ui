@@ -10,7 +10,13 @@
 - Theme Chalk at `lib/theme-chalk/index.css` and declarations at `types/index.d.ts`;
 - supported deep imports below `lib/`.
 
-Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the committed dependency-resolution snapshot, but npm remains the command runner. Do not add a `packageManager` pin, Corepack bootstrap, repository-owned installer, dependency cache, or workspace configuration unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored.
+Use pnpm for local dependency operations: `pnpm install`, `pnpm add`, `pnpm update`, and
+`pnpm remove`. Use npm for local development and lifecycle commands, including
+`npm run <script>` and `npm pack`. `pnpm-lock.yaml` is the committed dependency-resolution
+snapshot, and `pnpm-workspace.yaml` stores pnpm's dependency-build policy. In GitHub Actions, use
+`npm install` and `npm run <script>` without dependency caching. Do not use `npm ci` or add a
+`packageManager` pin, Corepack bootstrap, or repository-owned installer. `package-lock.json` is
+intentionally ignored.
 
 ## Repository map
 
@@ -48,7 +54,7 @@ The generated and ignored boundaries include `lib/`, `/dist/`, `packages/*/lib/`
 ## Development commands
 
 ```bash
-npm install
+pnpm install
 npm run dev          # Build source-derived files and serve docs on port 8085
 npm run dev:play     # Serve the component playground entry
 npm run build:file   # Regenerate source and localized documentation files

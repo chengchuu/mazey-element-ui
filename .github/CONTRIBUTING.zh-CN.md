@@ -31,10 +31,10 @@ Mazey Element UI 的成长离不开大家的支持，如果你愿意为 Mazey El
 - 合并代码需要两名维护人员参与：一人进行 review 后 approve，另一人再次 review，通过后即可合并。
 
 ## 开发环境搭建
-开发环境需要 Node.js 22 和 npm。
+开发环境需要 Node.js 22、pnpm 和 npm。
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-npm install
+pnpm install
 npm run dev
 
 # open http://localhost:8085/mazey-element-ui/

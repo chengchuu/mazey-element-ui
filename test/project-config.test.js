@@ -37,14 +37,14 @@ function getActions(source) {
   return Array.from(source.matchAll(/^\s+(?:- )?uses: ([^\s]+)$/gm), match => match[1]);
 }
 
-test('repository does not provision or pin the local package manager', () => {
+test('repository keeps local pnpm unpinned and GitHub Actions npm-only', () => {
   assert.strictEqual(packageJson.packageManager, undefined);
   assert.strictEqual(packageJson.scripts.bootstrap, undefined);
   for (const workflow of [pagesWorkflow, publishWorkflow]) {
-    assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|cache:\s*(?:npm|pnpm)/);
+    assert.doesNotMatch(workflow, /pnpm\/action-setup|corepack|npm ci|cache:\s*(?:npm|pnpm)/);
   }
   assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-lock.yaml')), true);
-  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), false);
+  assert.strictEqual(fs.existsSync(path.join(rootDir, 'pnpm-workspace.yaml')), true);
 });
 
 test('clean removes every generated package and test output boundary', () => {
@@ -66,13 +66,12 @@ test('clean removes every generated package and test output boundary', () => {
   }
 });
 
-test('package runtime and smoke test use the package metadata version', () => {
+test('package runtime does not duplicate the package metadata version', () => {
   const sourceEntry = read('src/index.js');
   const packageSmokeTest = read('build/bin/test-package.js');
 
-  assert.ok(sourceEntry.includes(`version: '${packageJson.version}'`));
-  assert.match(packageSmokeTest, /JSON\.stringify\(packageJson\.version\)/);
-  assert.doesNotMatch(packageSmokeTest, /assert\.strictEqual\(ElementUI\.version, ['"]\d/);
+  assert.doesNotMatch(sourceEntry, /^\s*version:/m);
+  assert.doesNotMatch(packageSmokeTest, /ElementUI\.version/);
 });
 
 test('composite scripts use npm for nested package scripts', () => {
@@ -98,24 +97,32 @@ test('documentation does not generate or link changelog pages', () => {
   assert.doesNotMatch(read('examples/route.config.js'), /changelog/i);
 });
 
-test('maintained development and installation docs use npm commands', () => {
-  const documentationFiles = [
+test('maintained development docs use pnpm for dependencies and npm for scripts', () => {
+  const developmentFiles = [
     'AGENTS.md',
     'README.md',
     'guides/PROJECT_TAKEOVER_AND_PAGES_MIGRATION.md',
     '.github/CONTRIBUTING.en-US.md',
     '.github/CONTRIBUTING.es.md',
     '.github/CONTRIBUTING.fr-FR.md',
-    '.github/CONTRIBUTING.zh-CN.md',
+    '.github/CONTRIBUTING.zh-CN.md'
+  ];
+  const installationFiles = [
     'examples/docs/en-US/installation.md',
     'examples/docs/es/installation.md',
     'examples/docs/fr-FR/installation.md',
     'examples/docs/zh-CN/installation.md'
   ];
 
-  for (const file of documentationFiles) {
+  for (const file of developmentFiles) {
     const source = read(file);
-    assert.doesNotMatch(source, /\bpnpm(?:\s|@)|\bcorepack\b/, file);
+    assert.match(source, /\bpnpm install\b/, file);
+    assert.match(source, /\bnpm run\b/, file);
+    assert.doesNotMatch(source, /\bcorepack\b|\bpackageManager\b\s*:/, file);
+  }
+
+  for (const file of installationFiles) {
+    assert.doesNotMatch(read(file), /\bpnpm(?:\s|@)/, file);
   }
 });
 

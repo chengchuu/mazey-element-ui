@@ -12,15 +12,18 @@ The migration must preserve the Vue 2 runtime API. Keep `El*` component names, `
 
 This work prepares the release but does not publish it to npm.
 
-## Use npm
+## Use pnpm locally and npm for commands
 
-Use npm for local development, GitHub Actions, registry operations, and package-artifact checks:
+Use pnpm for local dependency operations. Use npm for development scripts, GitHub Actions,
+registry operations, and package-artifact checks:
 
 - Remove `yarn.lock` and all Yarn-specific commands.
 - Preserve the established lockfile policy unless dependency maintenance explicitly changes it.
 - Do not add a `packageManager` field, Corepack bootstrap, or a repository-owned package-manager installer.
-- Use npm for dependency changes, scripts, builds, tests, and local development commands.
+- Use `pnpm install`, `pnpm add`, `pnpm update`, and `pnpm remove` for local dependency operations.
+- Use npm for scripts, builds, tests, and local development commands.
 - Install dependencies with `npm install` in CI without dependency caching.
+- Do not use `npm ci` in CI.
 - Run package scripts with `npm run <script>` in CI.
 - Inspect published package metadata with `npm view`.
 - Inspect the release artifact with `npm pack --dry-run`.
@@ -96,7 +99,7 @@ The existing `origin/release` branch is not a deployment source. Create and push
 Run the following repository checks on Node.js 22:
 
 ```bash
-npm install
+pnpm install
 npm run lint
 npm test
 npm run dist
