@@ -80,6 +80,7 @@ test('composite scripts use npm for nested package scripts', () => {
     assert.match(packageJson.scripts[name], /\bnpm\s+(?:run|test)\b/);
     assert.doesNotMatch(packageJson.scripts[name], /\bpnpm\b|run-package-scripts\.js/);
   }
+  assert.match(packageJson.scripts.docs, /node build\/bin\/check-docs-assets\.js/);
 });
 
 test('Make wrappers invoke only defined npm scripts', () => {
