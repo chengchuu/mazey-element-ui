@@ -10,7 +10,13 @@
 - Theme Chalk at `lib/theme-chalk/index.css` and declarations at `types/index.d.ts`;
 - supported deep imports below `lib/`.
 
-Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the committed dependency-resolution snapshot, but npm remains the command runner. Do not add a `packageManager` pin, Corepack bootstrap, repository-owned installer, dependency cache, or workspace configuration unless a task explicitly changes that policy. `package-lock.json` is intentionally ignored.
+Use pnpm for local dependency operations: `pnpm install`, `pnpm add`, `pnpm update`, and
+`pnpm remove`. Use npm for local development and lifecycle commands, including
+`npm run <script>` and `npm pack`. `pnpm-lock.yaml` is the committed dependency-resolution
+snapshot, and `pnpm-workspace.yaml` stores pnpm's dependency-build policy. In GitHub Actions, use
+`npm install` and `npm run <script>` without dependency caching. Do not use `npm ci` or add a
+`packageManager` pin, Corepack bootstrap, or repository-owned installer. `package-lock.json` is
+intentionally ignored.
 
 ## Repository map
 
@@ -19,7 +25,8 @@ Use npm for repository commands and GitHub Actions. `pnpm-lock.yaml` is the comm
 - `src/` contains shared locale, directive, mixin, transition, and utility code. `src/index.js` is generated from `components.json`.
 - `types/` defines the public TypeScript contract; update it with any public runtime change.
 - `examples/` is the Vue 2 documentation and component-demo SPA. It uses hash routing and must remain usable below `/mazey-element-ui/`.
-- `test/unit/specs/` contains the Karma, Mocha, and ChromeHeadless browser suite. `test/project-config.test.js` protects repository and workflow policy, while `build/bin/test-package.js` validates an installed package consumer.
+- `guides/` contains planning and reference notes. Treat implementation plans as historical intent when the live scripts, workflows, or package metadata differ.
+- `test/unit/specs/` contains the Karma, Mocha, and ChromeHeadless browser suite. `test/project-config.test.js` protects repository and workflow policy, while `build/bin/test-package.js` validates an installed package consumer. `test/ssr/require.test.js` is a standalone built-bundle probe and is not invoked by a package script.
 - `build/` contains the Babel and Webpack 5 configurations, Markdown loader, source generators, package builders, Pages finalizer, and pack checks.
 - `.github/workflows/validate-and-pages.yml` validates `main` and `release/v2`; only a push to `release/v2` deploys Pages.
 - `.github/workflows/publish-npm.yml` validates pull requests and release runs; only an eligible `release/v2` push or manual dispatch can publish to npm.
@@ -40,14 +47,14 @@ Do not hand-edit generated output. Change the owning source, template, registry,
 - `npm run build:theme` regenerates `packages/theme-chalk/src/index.scss`, compiles Theme Chalk, and copies its CSS and fonts into `lib/theme-chalk/`.
 - `npm run dist` cleans and rebuilds `lib/` and `packages/*/lib/` with Webpack, Babel, Gulp, and Dart Sass.
 - `npm test` rebuilds Theme Chalk and may create `dist/` plus coverage output.
-- `npm run deploy:build` recreates `examples/element-ui/`, then adds `.nojekyll`, `robots.txt`, and a root-only `sitemap.xml`.
+- `npm run docs` recreates `examples/element-ui/`, then adds `.nojekyll`, `robots.txt`, and a root-only `sitemap.xml`.
 
 The generated and ignored boundaries include `lib/`, `/dist/`, `packages/*/lib/`, `test/**/coverage`, localized generated page directories, and `examples/element-ui/`. The npm allowlist intentionally publishes `lib/`, `src/`, `packages/`, `types/`, and `web-types.json`; source changes in those directories can therefore affect consumers even when they are not package entry points.
 
 ## Development commands
 
 ```bash
-npm install
+pnpm install
 npm run dev          # Build source-derived files and serve docs on port 8085
 npm run dev:play     # Serve the component playground entry
 npm run build:file   # Regenerate source and localized documentation files
@@ -57,7 +64,7 @@ npm test             # Run the single-pass browser suite
 npm run test:watch   # Run the browser suite in watch mode
 npm run test:project # Run repository-policy regressions
 npm run dist         # Build all publishable package artifacts
-npm run deploy:build # Build the GitHub Pages artifact
+npm run docs         # Build the GitHub Pages artifact
 npm run test:package # Pack, install, and verify an npm consumer
 npm run pack:check   # Inspect the npm archive with a dry run
 npm run release:check
@@ -71,7 +78,7 @@ The public site is `https://chengchuu.github.io/mazey-element-ui/`. Keep Webpack
 
 Keep maintained package, repository, issue, contribution, installation, and release links on `mazey-element-ui`. Preserve upstream Element UI links when they are historical citations or attribution. Do not restore the retired online theme editor, private service probes, analytics, or CDN-loaded documentation runtime dependencies.
 
-GitHub Actions uses Node.js 22, installs with `npm install`, and explicitly disables dependency caching. Both workflows keep repository permissions read-only unless a deployment job needs narrower additional permissions.
+GitHub Actions uses Node.js 22, installs with `npm install`, and explicitly disables dependency caching. Validation and publication use `actions/checkout@v7` and `actions/setup-node@v7`; Pages deployment additionally uses `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, and `actions/deploy-pages@v5`. Both workflows keep repository permissions read-only unless a deployment job needs narrower additional permissions.
 
 The Pages workflow validates pushes and pull requests for `main` and `release/v2`, plus manual dispatches. Its deploy job owns `pages: write` and `id-token: write`, uses the non-canceling `pages` concurrency group, uploads `examples/element-ui/`, and runs only after successful validation on a push to `release/v2`.
 
@@ -90,7 +97,7 @@ npm run lint
 npm run test:project
 npm test
 npm run dist
-npm run deploy:build
+npm run docs
 npm run test:package
 npm run pack:check
 git diff --check

@@ -51,7 +51,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  version: '{{version}}',
   locale: locale.use,
   i18n: locale.i18n,
   install,
@@ -90,10 +89,8 @@ ComponentNames.forEach(name => {
 var template = render(MAIN_TEMPLATE, {
   include: includeComponentTemplate.join(endOfLine),
   install: installTemplate.join(',' + endOfLine),
-  version: process.env.VERSION || require('../../package.json').version,
   list: listTemplate.join(',' + endOfLine)
 });
 
 fs.writeFileSync(OUTPUT_PATH, template);
 console.log('[build entry] DONE:', OUTPUT_PATH);
-

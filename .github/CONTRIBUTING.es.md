@@ -36,11 +36,11 @@ Estamos orgullosos de que usted esta interesado en contribuir al proyecto `Eleme
 
 
 ## Requerimientos Técnicos
-Se requieren Node.js 22 y npm.
+Se requieren Node.js 22, pnpm y npm.
 .
 ```shell
 git clone https://github.com/chengchuu/mazey-element-ui.git
-npm install
+pnpm install
 npm run dev
 
 # abra http://localhost:8085

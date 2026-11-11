@@ -46,14 +46,15 @@ See the [quick start](https://chengchuu.github.io/mazey-element-ui/#/en-US/compo
 
 ## Development
 
-Development requires Node.js 22 and npm.
+Development requires Node.js 22. Use pnpm for dependency installation and npm for development
+scripts.
 
 ```bash
-npm install
+pnpm install
 npm run lint
 npm test
 npm run dist
-npm run deploy:build
+npm run docs
 ```
 
 Generated package files in `lib/`, generated theme files, and the Pages artifact in `examples/element-ui/` must be regenerated through their owning scripts.

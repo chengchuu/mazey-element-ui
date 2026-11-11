@@ -1,6 +1,6 @@
 {
   "name": "mazey-element-ui",
-  "version": "2.15.17",
+  "version": "2.15.18",
   "description": "A maintained Vue 2 desktop component library based on Element UI.",
   "main": "lib/element-ui.common.js",
   "files": [
@@ -17,7 +17,7 @@
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
     "clean": "rimraf lib dist packages/*/lib test/**/coverage examples/icon.json examples/element-ui examples/pages/en-US examples/pages/zh-CN examples/pages/es examples/pages/fr-FR",
-    "deploy:build": "npm run build:file && rimraf examples/element-ui && cross-env NODE_ENV=production node build/bin/build-docs.js && node build/bin/finalize-pages.js",
+    "docs": "npm run build:file && rimraf examples/element-ui && cross-env NODE_ENV=production node build/bin/build-docs.js && node build/bin/finalize-pages.js",
     "dev": "npm run build:file && cross-env NODE_ENV=development webpack serve --config build/webpack.demo.js",
     "dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack serve --config build/webpack.demo.js",
     "dist": "npm run clean && npm run build:file && npm run lint && node build/bin/build-package.js && npm run build:utils && npm run build:umd && npm run build:theme",
@@ -28,7 +28,7 @@
     "test:project": "node --test test/project-config.test.js",
     "test:watch": "npm run build:theme && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
     "pack:check": "node build/bin/check-pack.js",
-    "release:check": "npm run lint && npm run test:project && npm test && npm run dist && npm run deploy:build && npm run test:package && npm run pack:check"
+    "release:check": "npm run lint && npm run test:project && npm test && npm run dist && npm run docs && npm run test:package && npm run pack:check"
   },
   "repository": {
     "type": "git",
@@ -51,7 +51,7 @@
   "dependencies": {
     "async-validator": "~1.8.1",
     "deepmerge": "^1.2.0",
-    "mazey": "^5.6.9",
+    "mazey": "^5.9.1",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
     "throttle-debounce": "^1.0.1"

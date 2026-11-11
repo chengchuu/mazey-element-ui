@@ -67,7 +67,7 @@ The publish job must:
 
 Expose `secrets.NPM_TOKEN` only as `NODE_AUTH_TOKEN` on the publish step. Do not place it at workflow, job, setup, install, version-check, or build scope. The workflow needs no `contents: write`, `packages: write`, or Pages permissions.
 
-The workflow must not mutate or commit `package.json`, create or push Git tags, create GitHub releases, write a project `.npmrc`, publish to GitHub Packages, or invoke `deploy:build` in the publish job.
+The workflow must not mutate or commit `package.json`, create or push Git tags, create GitHub releases, write a project `.npmrc`, publish to GitHub Packages, or invoke `npm run docs` in the publish job.
 
 ## Extend policy tests
 
