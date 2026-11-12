@@ -12,13 +12,9 @@ Mazey Element UI is a maintained fork of Element UI 2.15.14 for Vue 2 desktop ap
 
 ## Install
 
-Install the package with npm:
-
 ```bash
 npm install mazey-element-ui
 ```
-
-Vue 2.5.17 or later is a peer dependency.
 
 ## Usage
 

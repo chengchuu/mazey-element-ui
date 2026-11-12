@@ -1,6 +1,6 @@
 {
   "name": "mazey-element-ui",
-  "version": "2.15.18",
+  "version": "2.15.19",
   "description": "A maintained Vue 2 desktop component library based on Element UI.",
   "main": "lib/element-ui.common.js",
   "files": [
@@ -17,7 +17,7 @@
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
     "clean": "rimraf lib dist packages/*/lib test/**/coverage examples/icon.json examples/element-ui examples/pages/en-US examples/pages/zh-CN examples/pages/es examples/pages/fr-FR",
-    "docs": "npm run build:file && rimraf examples/element-ui && cross-env NODE_ENV=production node build/bin/build-docs.js && node build/bin/finalize-pages.js",
+    "docs": "npm run build:file && rimraf examples/element-ui && cross-env NODE_ENV=production node build/bin/build-docs.js && node build/bin/check-docs-assets.js && node build/bin/finalize-pages.js",
     "dev": "npm run build:file && cross-env NODE_ENV=development webpack serve --config build/webpack.demo.js",
     "dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack serve --config build/webpack.demo.js",
     "dist": "npm run clean && npm run build:file && npm run lint && node build/bin/build-package.js && npm run build:utils && npm run build:umd && npm run build:theme",
@@ -51,7 +51,7 @@
   "dependencies": {
     "async-validator": "~1.8.1",
     "deepmerge": "^1.2.0",
-    "mazey": "^5.9.1",
+    "mazey": "^5.10.1",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
     "throttle-debounce": "^1.0.1"
@@ -120,7 +120,7 @@
     "vue-loader": "^15.11.1",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "2.5.21",
-    "webpack": "^5.101.3",
+    "webpack": "5.109.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
     "webpack-node-externals": "^3.0.0"
